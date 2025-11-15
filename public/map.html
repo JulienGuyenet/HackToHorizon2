@@ -29,25 +29,49 @@
         </nav>
 
         <main class="app-content">
-            <div class="map-controls">
-                <div class="control-group">
-                    <label for="map-floor-filter">Sélectionner l'étage</label>
-                    <select id="map-floor-filter">
-                        <option value="">Sélectionner un étage</option>
-                        <option value="1">Étage 1</option>
-                        <option value="2">Étage 2</option>
-                        <option value="3">Étage 3</option>
-                        <option value="4">Étage 4</option>
-                    </select>
+            <div class="map-page-container">
+                <!-- Transparent Filter Panel - Top Right -->
+                <div class="map-filter-panel">
+                    <h3>Filtres</h3>
+                    <div class="filter-group">
+                        <label for="map-floor-filter">Étage</label>
+                        <select id="map-floor-filter">
+                            <option value="rdc">RDC</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label for="map-room-filter">Salle</label>
+                        <select id="map-room-filter">
+                            <option value="">Toutes les salles</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label for="map-type-filter">Type</label>
+                        <select id="map-type-filter">
+                            <option value="">Tous les types</option>
+                        </select>
+                    </div>
+                    <div class="filter-actions">
+                        <button class="btn btn-secondary btn-sm" id="reset-map-filters">Réinitialiser</button>
+                        <button class="btn btn-primary btn-sm" id="apply-map-filters">Appliquer</button>
+                    </div>
                 </div>
-                <button class="btn btn-primary" id="load-map">Charger la carte</button>
+
+                <!-- Add Furniture Menu - Top Left -->
+                <div class="map-add-furniture-menu">
+                    <button class="btn btn-primary" id="add-furniture-btn" title="Ajouter un meuble sur la carte">
+                        <span>➕</span> Ajouter un meuble
+                    </button>
+                </div>
+
+                <!-- Map Display Area -->
+                <div class="map-display-area" id="map-container">
+                    <div class="map-placeholder">
+                        <p>Sélectionnez un étage pour afficher la carte</p>
+                    </div>
+                </div>
             </div>
         </main>
-    </div>
-
-    <!-- Map Container Overlay -->
-    <div class="map-container-wrapper">
-        <div id="map-container"></div>
     </div>
 
     <!-- Core classes -->
