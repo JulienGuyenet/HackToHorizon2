@@ -18,8 +18,8 @@ class Application {
     async init() {
         // Initialize API Client
         this.apiClient = new ApiClient({
-            baseURL: 'http://localhost:5000/api',
-            httpsBaseURL: 'https://localhost:5001/api',
+            baseURL: 'http://localhost:5281/api',
+            httpsBaseURL: 'https://localhost:7201/api',
             useHttps: false
         });
 

@@ -1,0 +1,14 @@
+services:
+  web:
+    build: .
+    image: hacktohorizon-client
+    container_name: hacktohorizon-client
+    ports:
+      - "8080:80"
+    restart: unless-stopped
+    networks:
+      - hacktohorizon-network
+
+networks:
+  hacktohorizon-network:
+    driver: bridge
