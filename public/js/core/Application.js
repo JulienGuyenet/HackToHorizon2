@@ -16,11 +16,7 @@ class Application {
      */
     async init() {
         // Initialize API Client
-        this.apiClient = new ApiClient({
-            baseURL: 'http://localhost:5281/api',
-            httpsBaseURL: 'https://localhost:7201/api',
-            useHttps: false
-        });
+        this.apiClient = new ApiClient();
 
         // Initialize Repositories
         this.furnitureRepository = new FurnitureRepository(this.apiClient);

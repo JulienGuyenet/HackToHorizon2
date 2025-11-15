@@ -95,7 +95,7 @@ class MapController {
         const mapWrapper = document.querySelector('.map-container-wrapper');
         
         const imageName = this.floorImageMap[floor] || 'rdc.png';
-        const imagePath = `/assets/images/floors/${imageName}`;
+        const imagePath = `/images/floors/${imageName}`;
         
         const floorItems = this.inventoryService.getItemsByFloor(floor);
         
