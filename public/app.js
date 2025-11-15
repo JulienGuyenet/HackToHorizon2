@@ -283,6 +283,7 @@ function loadMap() {
     }
 
     const mapContainer = document.getElementById('map-container');
+    const mapWrapper = document.querySelector('.map-container-wrapper');
     const floorImageMap = {
         'rdc': 'rdc.png',
         '1er etage': '1.png',
@@ -292,18 +293,47 @@ function loadMap() {
     };
     
     const imageName = floorImageMap[floor] || 'rdc.png';
-    const imagePath = `../assets/images/floors/${imageName}`;
+    const imagePath = `/assets/images/floors/${imageName}`;
     
     mapContainer.innerHTML = `
-        <div class="floor-map">
-            <img src="${imagePath}" alt="Plan ${escapeHtml(floor)}" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-            <div class="empty-state" style="display: none;">
-                <div class="empty-state-icon">🗺️</div>
-                <h3>Image non disponible</h3>
-                <p>Le plan pour ${escapeHtml(floor)} n'est pas disponible</p>
+        <div class="floor-map-overlay">
+            <div class="floor-info-bar">
+                <span class="floor-name">${escapeHtml(floor)}</span>
+                <button class="close-map" onclick="closeMap()">✕</button>
+            </div>
+            <div class="floor-map-content">
+                <img src="${imagePath}" alt="Plan ${escapeHtml(floor)}" onerror="handleImageError(this)">
             </div>
         </div>
     `;
+    
+    // Show the map overlay
+    mapWrapper.classList.add('active');
+}
+
+// Close map view
+function closeMap() {
+    const mapContainer = document.getElementById('map-container');
+    const mapWrapper = document.querySelector('.map-container-wrapper');
+    
+    mapContainer.innerHTML = '';
+    
+    // Hide the map overlay
+    mapWrapper.classList.remove('active');
+}
+
+// Handle image loading errors
+function handleImageError(img) {
+    img.style.display = 'none';
+    const errorDiv = document.createElement('div');
+    errorDiv.className = 'empty-state';
+    errorDiv.style.display = 'flex';
+    errorDiv.style.color = '#fff';
+    errorDiv.innerHTML = `
+        <h3>Image non disponible</h3>
+        <p>Le plan pour cet étage n'est pas disponible</p>
+    `;
+    img.parentElement.appendChild(errorDiv);
 }
 
 // Utility: Escape HTML

@@ -63,15 +63,6 @@
                     </div>
                     <button class="btn btn-primary" id="load-map">Charger la carte</button>
                 </div>
-
-                <div class="map-container-wrapper">
-                    <div id="map-container">
-                        <div class="empty-state">
-                            <h3>Carte Non Chargée</h3>
-                            <p>Sélectionnez un étage et cliquez sur "Charger la carte"</p>
-                        </div>
-                    </div>
-                </div>
             </div>
 
             <!-- Statistics Tab -->
@@ -100,6 +91,11 @@
                 <div id="detailed-stats" style="margin-top: 30px;"></div>
             </div>
         </main>
+    </div>
+
+    <!-- Map Container Overlay (outside main structure) -->
+    <div class="map-container-wrapper">
+        <div id="map-container"></div>
     </div>
 
     <script src="app.js"></script>
