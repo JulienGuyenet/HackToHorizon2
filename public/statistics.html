@@ -72,26 +72,7 @@
     <!-- Utilities -->
     <script src="js/utils/Utils.js"></script>
     
-    <script>
-        // Bootstrap application
-        let app;
-        let statisticsController;
-        
-        (async function() {
-            try {
-                // Initialize application
-                app = await new Application().init();
-                
-                // Create and initialize controller
-                statisticsController = app.createStatisticsController();
-                await statisticsController.init();
-                
-                // Make changeLanguage globally available for buttons
-                window.changeLanguage = (lng) => app.getI18nService().changeLanguage(lng);
-            } catch (error) {
-                console.error('Failed to initialize application:', error);
-            }
-        })();
-    </script>
+    <!-- Bootstrap -->
+    <script src="js/bootstrap.js"></script>
 </body>
 </html>

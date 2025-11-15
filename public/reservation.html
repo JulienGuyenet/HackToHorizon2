@@ -17,11 +17,11 @@
             </div>
         </header>
 
-        <nav class="app-nav">
-            <a href="inventory.html" data-i18n="nav.inventory">Inventaire</a>
-            <a href="map.html" data-i18n="nav.map">Carte Interactive</a>
-            <a href="statistics.html" data-i18n="nav.statistics">Statistiques</a>
-            <a href="reservation.html" class="active" data-i18n="nav.reservation">Réservations</a>
+        <nav class="app-tabs">
+            <a href="inventory.html" class="tab-button" data-i18n="nav.inventory">Inventaire</a>
+            <a href="map.html" class="tab-button" data-i18n="nav.map">Carte Interactive</a>
+            <a href="statistics.html" class="tab-button" data-i18n="nav.statistics">Statistiques</a>
+            <a href="reservation.html" class="tab-button active" data-i18n="nav.reservation">Réservations</a>
         </nav>
 
         <main class="main-content">
@@ -172,11 +172,53 @@
         <p data-i18n="reservation.loading">Chargement...</p>
     </div>
 
-    <!-- Scripts -->
-    <script src="https://cdn.jsdelivr.net/npm/i18next@23.7.6/i18next.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/i18next-http-backend@2.4.2/i18nextHttpBackend.min.js"></script>
-    <script src="js/i18n.js"></script>
-    <script src="js/apiService.js"></script>
+    <!-- i18next libraries -->
+    <script src="https://cdn.jsdelivr.net/npm/i18next@21.10.0/i18next.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/i18next-http-backend@2.1.0/i18nextHttpBackend.min.js"></script>
+    
+    <!-- Core classes -->
+    <script src="js/core/ApiClient.js"></script>
+    <script src="js/core/I18nService.js"></script>
+    <script src="js/core/Application.js"></script>
+    
+    <!-- Repositories -->
+    <script src="js/repositories/FurnitureRepository.js"></script>
+    
+    <!-- Compatibility layer for reservation page -->
+    <script>
+        // Create compatibility wrapper for old apiService.js functions
+        let furnitureRepository;
+        
+        // Initialize and expose API functions
+        (async function() {
+            // Initialize application for i18n
+            window.app = await new Application().init();
+            window.changeLanguage = (lng) => window.app.getI18nService().changeLanguage(lng);
+            
+            // Initialize i18n
+            await window.app.getI18nService().init();
+            
+            // Make I18nService available globally for ApiClient
+            window.I18nService = window.app.getI18nService();
+            
+            // Update translations
+            window.I18nService.updatePageTranslations();
+            
+            // Create repository instance
+            furnitureRepository = new FurnitureRepository(window.app.getApiClient());
+            
+            // Expose API functions for compatibility with reservation.js
+            window.getAllFurniture = () => furnitureRepository.getAll();
+            window.getFurnitureById = (id) => furnitureRepository.getById(id);
+            window.searchFurniture = (params) => furnitureRepository.search(params);
+            
+            // Expose i18next for compatibility with reservation.js
+            if (typeof i18next !== 'undefined' && i18next.isInitialized) {
+                window.i18next = i18next;
+            }
+        })();
+    </script>
+    
     <script src="js/reservation.js"></script>
 </body>
 </html>
