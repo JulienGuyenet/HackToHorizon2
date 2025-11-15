@@ -9,7 +9,7 @@
 <body>
     <div class="app-container">
         <header class="app-header">
-            <h1>📦 Système de Gestion d'Inventaire</h1>
+            <h1>Système de Gestion d'Inventaire</h1>
             <p>Bâtiment VIOTTE - Gestion Interactive</p>
         </header>
 
@@ -17,7 +17,6 @@
             <button class="tab-button active" data-tab="inventory">Inventaire</button>
             <button class="tab-button" data-tab="map">Carte Interactive</button>
             <button class="tab-button" data-tab="statistics">Statistiques</button>
-            <button class="tab-button" data-tab="about">À Propos</button>
         </nav>
 
         <main class="app-content">
@@ -26,25 +25,25 @@
                 <div class="control-panel">
                     <div class="control-row">
                         <div class="control-group">
-                            <label for="search-input">🔍 Rechercher</label>
+                            <label for="search-input">Rechercher</label>
                             <input type="text" id="search-input" placeholder="Nom, référence, code barre...">
                         </div>
                         <div class="control-group">
-                            <label for="floor-filter">🏢 Étage</label>
+                            <label for="floor-filter">Étage</label>
                             <select id="floor-filter">
                                 <option value="">Tous les étages</option>
                             </select>
                         </div>
                         <div class="control-group">
-                            <label for="room-filter">🚪 Salle</label>
+                            <label for="room-filter">Salle</label>
                             <select id="room-filter">
                                 <option value="">Toutes les salles</option>
                             </select>
                         </div>
                     </div>
                     <div class="control-row">
-                        <button class="btn btn-secondary" id="reset-filters">Réinitialiser les filtres</button>
-                        <button class="btn btn-primary" id="apply-filters">Appliquer les filtres</button>
+                        <button class="btn btn-secondary" id="reset-filters">Réinitialiser</button>
+                        <button class="btn btn-primary" id="apply-filters">Appliquer</button>
                     </div>
                 </div>
 
@@ -55,37 +54,20 @@
 
             <!-- Map Tab -->
             <div id="map-tab" class="tab-pane">
-                <div class="alert alert-info">
-                    <strong>💡 Information:</strong> La carte interactive nécessite des coordonnées configurées pour les items. 
-                    Utilisez l'outil de placement de points pour configurer les positions.
-                </div>
-                
-                <div class="control-panel">
-                    <div class="control-row">
-                        <div class="control-group">
-                            <label for="map-floor-filter">🏢 Sélectionner l'étage</label>
-                            <select id="map-floor-filter">
-                                <option value="">Sélectionner un étage</option>
-                            </select>
-                        </div>
-                        <button class="btn btn-primary" id="load-map">Charger la carte</button>
+                <div class="map-controls">
+                    <div class="control-group">
+                        <label for="map-floor-filter">Sélectionner l'étage</label>
+                        <select id="map-floor-filter">
+                            <option value="">Sélectionner un étage</option>
+                        </select>
                     </div>
-                </div>
-
-                <div class="map-container-wrapper">
-                    <div id="map-container">
-                        <div class="empty-state">
-                            <div class="empty-state-icon">🗺️</div>
-                            <h3>Carte Non Chargée</h3>
-                            <p>Sélectionnez un étage et cliquez sur "Charger la carte"</p>
-                        </div>
-                    </div>
+                    <button class="btn btn-primary" id="load-map">Charger la carte</button>
                 </div>
             </div>
 
             <!-- Statistics Tab -->
             <div id="statistics-tab" class="tab-pane">
-                <h2 style="margin-bottom: 20px; color: #667eea;">📊 Statistiques Globales</h2>
+                <h2 style="margin-bottom: 20px;">Statistiques Globales</h2>
                 
                 <div class="stats-container" id="global-stats">
                     <div class="stat-card">
@@ -106,396 +88,16 @@
                     </div>
                 </div>
 
-                <div id="detailed-stats" style="margin-top: 30px;">
-                    <!-- Detailed statistics will be inserted here -->
-                </div>
-            </div>
-
-            <!-- About Tab -->
-            <div id="about-tab" class="tab-pane">
-                <div class="info-section">
-                    <h3>🎯 À Propos du Système</h3>
-                    <p>
-                        Ce système de gestion d'inventaire interactif a été conçu pour faciliter la visualisation 
-                        et la gestion des équipements du bâtiment VIOTTE.
-                    </p>
-                </div>
-
-                <div class="info-section">
-                    <h3>✨ Fonctionnalités</h3>
-                    <ul>
-                        <li>📦 Gestion complète de l'inventaire avec filtrage avancé</li>
-                        <li>🗺️ Visualisation interactive sur plan d'étage</li>
-                        <li>📊 Statistiques détaillées par étage et par famille</li>
-                        <li>🔍 Recherche rapide et intuitive</li>
-                        <li>🔒 Sécurité renforcée contre les vulnérabilités</li>
-                        <li>📱 Interface responsive et moderne</li>
-                    </ul>
-                </div>
-
-                <div class="info-section">
-                    <h3>🏗️ Architecture</h3>
-                    <p>Le système suit les principes SOLID pour une meilleure maintenabilité:</p>
-                    <ul>
-                        <li><strong>S</strong>ingle Responsibility - Chaque module a une responsabilité unique</li>
-                        <li><strong>O</strong>pen/Closed - Extensible sans modification du code existant</li>
-                        <li><strong>L</strong>iskov Substitution - Composants interchangeables</li>
-                        <li><strong>I</strong>nterface Segregation - Interfaces spécifiques et ciblées</li>
-                        <li><strong>D</strong>ependency Inversion - Dépend des abstractions</li>
-                    </ul>
-                </div>
-
-                <div class="info-section">
-                    <h3>📁 Structure du Projet</h3>
-                    <ul>
-                        <li><code>/src/modules/</code> - Modules principaux (HTML Generator, Map, etc.)</li>
-                        <li><code>/src/readers/</code> - Lecteurs de données (CSV, Excel)</li>
-                        <li><code>/src/utils/</code> - Utilitaires (Parser, Sanitizer, Filters)</li>
-                        <li><code>/assets/images/</code> - Images du bâtiment</li>
-                        <li><code>/public/</code> - Fichiers publics (HTML, CSS)</li>
-                    </ul>
-                </div>
-
-                <div class="alert alert-warning">
-                    <strong>⚠️ Sécurité:</strong> Ce système utilise un lecteur CSV natif pour éviter les 
-                    vulnérabilités des bibliothèques externes. Toutes les entrées utilisateur sont 
-                    sanitisées pour prévenir les attaques XSS.
-                </div>
+                <div id="detailed-stats" style="margin-top: 30px;"></div>
             </div>
         </main>
     </div>
 
-    <script src="../src/modules/interactiveMap.js"></script>
-    <script>
-        // Global state
-        let allItems = [];
-        let filteredItems = [];
-        let currentFloor = '';
-        let currentRoom = '';
-        let currentSearch = '';
+    <!-- Map Container Overlay (outside main structure) -->
+    <div class="map-container-wrapper">
+        <div id="map-container"></div>
+    </div>
 
-        // Initialize the application
-        async function initApp() {
-            try {
-                // Load data from CSV (preferred for security)
-                await loadData();
-                setupEventListeners();
-                populateFilters();
-                updateStatistics();
-                displayItems(allItems);
-            } catch (error) {
-                console.error('Error initializing app:', error);
-                showError('Erreur lors du chargement des données');
-            }
-        }
-
-        // Load data (in production, this would fetch from a server)
-        async function loadData() {
-            // For demo purposes, we'll use sample data
-            // In production, replace with: const response = await fetch('/api/inventory');
-            allItems = generateSampleData();
-            filteredItems = allItems;
-        }
-
-        // Generate sample data for demonstration
-        function generateSampleData() {
-            const floors = ['rdc', '1er etage', '2eme etage', '3eme etage', '4eme etage'];
-            const families = ['Mobilier de bureau', 'Informatique', 'Sécurité', 'Électroménager'];
-            const types = ['Fauteuil', 'Bureau', 'Ordinateur', 'Imprimante', 'Défibrillateur'];
-            
-            const items = [];
-            for (let i = 1; i <= 100; i++) {
-                const floor = floors[Math.floor(Math.random() * floors.length)];
-                const room = String(100 + Math.floor(Math.random() * 50));
-                
-                items.push({
-                    id: i,
-                    reference: `REF${String(i).padStart(5, '0')}`,
-                    designation: `Item ${i} - ${types[Math.floor(Math.random() * types.length)]}`,
-                    family: families[Math.floor(Math.random() * families.length)],
-                    type: types[Math.floor(Math.random() * types.length)],
-                    supplier: 'Fournisseur ' + (i % 5 + 1),
-                    user: 'Utilisateur ' + (i % 10 + 1),
-                    barcode: String(10000 + i),
-                    serialNumber: `SN${String(i).padStart(6, '0')}`,
-                    information: 'Information détaillée sur l\'item',
-                    deliveryDate: '2024-01-01',
-                    location: {
-                        floor: floor,
-                        room: room,
-                        fullPath: `25\\BESANCON\\Siege\\VIOTTE\\${floor}\\${room}`,
-                        building: 'VIOTTE',
-                        site: 'Siege',
-                        city: 'BESANCON'
-                    },
-                    coordinates: { x: null, y: null }
-                });
-            }
-            return items;
-        }
-
-        // Setup event listeners
-        function setupEventListeners() {
-            // Tab switching
-            document.querySelectorAll('.tab-button').forEach(button => {
-                button.addEventListener('click', () => switchTab(button.dataset.tab));
-            });
-
-            // Filters
-            document.getElementById('apply-filters').addEventListener('click', applyFilters);
-            document.getElementById('reset-filters').addEventListener('click', resetFilters);
-            document.getElementById('search-input').addEventListener('keyup', (e) => {
-                if (e.key === 'Enter') applyFilters();
-            });
-
-            // Map controls
-            document.getElementById('load-map').addEventListener('click', loadMap);
-        }
-
-        // Switch between tabs
-        function switchTab(tabName) {
-            // Update buttons
-            document.querySelectorAll('.tab-button').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            document.querySelector(`[data-tab="${tabName}"]`).classList.add('active');
-
-            // Update content
-            document.querySelectorAll('.tab-pane').forEach(pane => {
-                pane.classList.remove('active');
-            });
-            document.getElementById(`${tabName}-tab`).classList.add('active');
-        }
-
-        // Populate filter dropdowns
-        function populateFilters() {
-            const floors = [...new Set(allItems.map(item => item.location.floor))].filter(Boolean).sort();
-            const rooms = [...new Set(allItems.map(item => item.location.room))].filter(Boolean).sort();
-
-            const floorSelect = document.getElementById('floor-filter');
-            const roomSelect = document.getElementById('room-filter');
-            const mapFloorSelect = document.getElementById('map-floor-filter');
-
-            floors.forEach(floor => {
-                floorSelect.add(new Option(floor, floor));
-                mapFloorSelect.add(new Option(floor, floor));
-            });
-
-            rooms.forEach(room => {
-                roomSelect.add(new Option(room, room));
-            });
-        }
-
-        // Apply filters
-        function applyFilters() {
-            currentFloor = document.getElementById('floor-filter').value;
-            currentRoom = document.getElementById('room-filter').value;
-            currentSearch = document.getElementById('search-input').value.toLowerCase();
-
-            filteredItems = allItems.filter(item => {
-                let matches = true;
-
-                if (currentFloor && item.location.floor !== currentFloor) {
-                    matches = false;
-                }
-
-                if (currentRoom && item.location.room !== currentRoom) {
-                    matches = false;
-                }
-
-                if (currentSearch) {
-                    const searchString = `${item.designation} ${item.reference} ${item.barcode} ${item.user}`.toLowerCase();
-                    if (!searchString.includes(currentSearch)) {
-                        matches = false;
-                    }
-                }
-
-                return matches;
-            });
-
-            displayItems(filteredItems);
-        }
-
-        // Reset filters
-        function resetFilters() {
-            document.getElementById('floor-filter').value = '';
-            document.getElementById('room-filter').value = '';
-            document.getElementById('search-input').value = '';
-            currentFloor = '';
-            currentRoom = '';
-            currentSearch = '';
-            filteredItems = allItems;
-            displayItems(allItems);
-        }
-
-        // Display items
-        function displayItems(items) {
-            const container = document.getElementById('items-container');
-            
-            if (items.length === 0) {
-                container.innerHTML = `
-                    <div class="empty-state">
-                        <div class="empty-state-icon">📭</div>
-                        <h3>Aucun item trouvé</h3>
-                        <p>Essayez de modifier vos critères de recherche</p>
-                    </div>
-                `;
-                return;
-            }
-
-            const html = `
-                <div style="margin-bottom: 15px; color: #495057;">
-                    <strong>${items.length}</strong> item(s) trouvé(s)
-                </div>
-                <div class="items-grid">
-                    ${items.map(item => generateItemCardHTML(item)).join('')}
-                </div>
-            `;
-            
-            container.innerHTML = html;
-        }
-
-        // Generate item card HTML
-        function generateItemCardHTML(item) {
-            return `
-                <div class="item-card">
-                    <div class="item-header">
-                        <h3 class="item-designation">${escapeHtml(item.designation)}</h3>
-                        <span class="item-barcode">#${escapeHtml(item.barcode)}</span>
-                    </div>
-                    <div class="item-body">
-                        <div class="item-detail">
-                            <span class="label">Référence:</span>
-                            <span class="value">${escapeHtml(item.reference)}</span>
-                        </div>
-                        <div class="item-detail">
-                            <span class="label">Type:</span>
-                            <span class="value">${escapeHtml(item.type)}</span>
-                        </div>
-                        <div class="item-detail">
-                            <span class="label">Famille:</span>
-                            <span class="value">${escapeHtml(item.family)}</span>
-                        </div>
-                        <div class="item-detail">
-                            <span class="label">Utilisateur:</span>
-                            <span class="value">${escapeHtml(item.user)}</span>
-                        </div>
-                        <div class="item-detail">
-                            <span class="label">Localisation:</span>
-                            <span class="value">${escapeHtml(item.location.floor || 'N/A')} - Salle ${escapeHtml(item.location.room || 'N/A')}</span>
-                        </div>
-                    </div>
-                </div>
-            `;
-        }
-
-        // Update statistics
-        function updateStatistics() {
-            const floors = [...new Set(allItems.map(item => item.location.floor))].filter(Boolean);
-            const rooms = [...new Set(allItems.map(item => item.location.room))].filter(Boolean);
-            const families = [...new Set(allItems.map(item => item.family))].filter(Boolean);
-
-            document.getElementById('total-items').textContent = allItems.length;
-            document.getElementById('total-floors').textContent = floors.length;
-            document.getElementById('total-rooms').textContent = rooms.length;
-            document.getElementById('total-families').textContent = families.length;
-
-            // Generate detailed statistics
-            generateDetailedStats();
-        }
-
-        // Generate detailed statistics
-        function generateDetailedStats() {
-            const byFloor = {};
-            const byFamily = {};
-
-            allItems.forEach(item => {
-                const floor = item.location.floor || 'Inconnu';
-                const family = item.family || 'Inconnu';
-
-                byFloor[floor] = (byFloor[floor] || 0) + 1;
-                byFamily[family] = (byFamily[family] || 0) + 1;
-            });
-
-            const detailedStatsHTML = `
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
-                    <div class="info-section">
-                        <h3>📊 Par Étage</h3>
-                        ${Object.entries(byFloor).sort((a, b) => b[1] - a[1]).map(([floor, count]) => `
-                            <div style="display: flex; justify-content: space-between; padding: 10px; border-bottom: 1px solid #dee2e6;">
-                                <span>${escapeHtml(floor)}</span>
-                                <strong>${count}</strong>
-                            </div>
-                        `).join('')}
-                    </div>
-                    <div class="info-section">
-                        <h3>📦 Par Famille</h3>
-                        ${Object.entries(byFamily).sort((a, b) => b[1] - a[1]).map(([family, count]) => `
-                            <div style="display: flex; justify-content: space-between; padding: 10px; border-bottom: 1px solid #dee2e6;">
-                                <span>${escapeHtml(family)}</span>
-                                <strong>${count}</strong>
-                            </div>
-                        `).join('')}
-                    </div>
-                </div>
-            `;
-
-            document.getElementById('detailed-stats').innerHTML = detailedStatsHTML;
-        }
-
-        // Load map
-        function loadMap() {
-            const floor = document.getElementById('map-floor-filter').value;
-            if (!floor) {
-                alert('Veuillez sélectionner un étage');
-                return;
-            }
-
-            const mapContainer = document.getElementById('map-container');
-            mapContainer.innerHTML = `
-                <div class="empty-state">
-                    <div class="empty-state-icon">🗺️</div>
-                    <h3>Carte pour: ${escapeHtml(floor)}</h3>
-                    <p>Fonctionnalité en cours de développement</p>
-                    <p style="margin-top: 20px; color: #6c757d;">
-                        Pour activer la carte interactive, configurez les coordonnées des items 
-                        en utilisant l'outil de placement de points.
-                    </p>
-                </div>
-            `;
-        }
-
-        // Utility: Escape HTML
-        function escapeHtml(text) {
-            if (!text) return '';
-            const map = {
-                '&': '&amp;',
-                '<': '&lt;',
-                '>': '&gt;',
-                '"': '&quot;',
-                "'": '&#039;'
-            };
-            return String(text).replace(/[&<>"']/g, m => map[m]);
-        }
-
-        // Show error message
-        function showError(message) {
-            const container = document.getElementById('items-container');
-            container.innerHTML = `
-                <div class="empty-state">
-                    <div class="empty-state-icon">⚠️</div>
-                    <h3>Erreur</h3>
-                    <p>${escapeHtml(message)}</p>
-                </div>
-            `;
-        }
-
-        // Initialize when DOM is ready
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', initApp);
-        } else {
-            initApp();
-        }
-    </script>
+    <script src="app.js"></script>
 </body>
 </html>
