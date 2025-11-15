@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Outil de Placement de Points - Plan d'Étage</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header style="text-align: center; margin-bottom: 30px;">
+            <h1 style="color: #2c3e50;">Outil de Placement de Points</h1>
+            <p style="color: #7f8c8d;">Placez les points sur le plan d'étage pour localiser vos équipements</p>
+        </header>
+        
+        <div id="point-placer-container"></div>
+    </div>
+
+    <script src="pointPlacer.js"></script>
+    <script>
+        // Load data from Excel (in a real scenario, this would be from the server)
+        // For this demo, we'll use mock data
+        const mockData = [
+            {
+                id: 1,
+                reference: 'FAUTDACTYOPE',
+                designation: 'Fauteuil dactylo opérateur',
+                family: 'Mobilier de bureau',
+                type: 'Fauteuil',
+                supplier: 'MB2',
+                user: 'FERDENZI, Myriam',
+                barcode: '16687',
+                serialNumber: '',
+                information: 'Fauteuil ergonomique de marque SPIRIT',
+                deliveryDate: '',
+                location: {
+                    floor: '4eme etage',
+                    room: '417',
+                    fullPath: '25\\BESANCON\\Siege\\VIOTTE\\4eme etage\\417',
+                    building: 'VIOTTE',
+                    site: 'Siege',
+                    city: 'BESANCON'
+                },
+                coordinates: { x: null, y: null }
+            },
+            {
+                id: 2,
+                reference: 'FAUTDACTYOPE',
+                designation: 'Fauteuil dactylo opérateur',
+                family: 'Mobilier de bureau',
+                type: 'Fauteuil',
+                supplier: 'EquipBuro',
+                user: 'LAURENT, Andre',
+                barcode: '16953',
+                serialNumber: '',
+                information: 'Fauteuil ergonomique Haut dossier',
+                deliveryDate: '',
+                location: {
+                    floor: '1er etage',
+                    room: '105',
+                    fullPath: '25\\BESANCON\\Siege\\VIOTTE\\1er etage\\105',
+                    building: 'VIOTTE',
+                    site: 'Siege',
+                    city: 'BESANCON'
+                },
+                coordinates: { x: null, y: null }
+            },
+            {
+                id: 3,
+                reference: 'PDROIT1600P8',
+                designation: 'Plan droit L1600 P8',
+                family: 'Mobilier de bureau',
+                type: 'Plan droit',
+                supplier: 'EquipBuro',
+                user: 'LAURENT, Andre',
+                barcode: '16954',
+                serialNumber: '',
+                information: 'Plan droit 1600x800 télescopique',
+                deliveryDate: '',
+                location: {
+                    floor: '1er etage',
+                    room: '105',
+                    fullPath: '25\\BESANCON\\Siege\\VIOTTE\\1er etage\\105',
+                    building: 'VIOTTE',
+                    site: 'Siege',
+                    city: 'BESANCON'
+                },
+                coordinates: { x: null, y: null }
+            },
+            {
+                id: 4,
+                reference: 'FAUTDACTYOPE',
+                designation: 'Fauteuil dactylo opérateur',
+                family: 'Mobilier de bureau',
+                type: 'Fauteuil',
+                supplier: 'EquipBuro',
+                user: 'LAROCHE, Elise',
+                barcode: '16956',
+                serialNumber: '',
+                information: 'Fauteuil ergonomique Haut dossier résille 3D',
+                deliveryDate: '',
+                location: {
+                    floor: '3eme etage',
+                    room: '318',
+                    fullPath: '25\\BESANCON\\Siege\\VIOTTE\\3eme etage\\318',
+                    building: 'VIOTTE',
+                    site: 'Siege',
+                    city: 'BESANCON'
+                },
+                coordinates: { x: null, y: null }
+            }
+        ];
+
+        // Initialize the point placer with the floor plan image
+        const placer = new PointPlacer(
+            'point-placer-container',
+            'Screenshot 2025-11-15 at 12.29.07.png',
+            mockData
+        );
+
+        // Note: In production, you would load the actual data from the Excel file
+        // using a fetch request to a server endpoint that uses excelReader.js
+        /*
+        fetch('/api/inventory-data')
+            .then(response => response.json())
+            .then(data => {
+                const placer = new PointPlacer(
+                    'point-placer-container',
+                    'Screenshot 2025-11-15 at 12.29.07.png',
+                    data
+                );
+            });
+        */
+    </script>
+</body>
+</html>
