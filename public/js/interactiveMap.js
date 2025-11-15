@@ -1,7 +1,7 @@
 /**
  * Interactive Map Module
  * Handles the interactive floor plan with clickable points
- * For browser use only
+ * Browser-only version
  */
 
 class InteractiveMap {
@@ -37,14 +37,14 @@ class InteractiveMap {
     createMapStructure() {
         this.container.innerHTML = `
             <div class="map-wrapper">
-                <div class="map-container" id="map-container">
+                <div class="interactive-map-container" id="interactive-map-container">
                     <img id="floor-plan-image" src="${this.imageUrl}" alt="Floor Plan" />
                     <svg id="map-overlay" class="map-overlay"></svg>
                 </div>
             </div>
         `;
         
-        this.mapContainer = document.getElementById('map-container');
+        this.mapContainer = document.getElementById('interactive-map-container');
         this.image = document.getElementById('floor-plan-image');
         this.svg = document.getElementById('map-overlay');
     }
@@ -57,13 +57,18 @@ class InteractiveMap {
             this.updateSVGSize();
             this.renderPoints();
         });
+        
+        // If image is already loaded
+        if (this.image.complete) {
+            this.updateSVGSize();
+            this.renderPoints();
+        }
     }
     
     /**
      * Update SVG overlay size to match image
      */
     updateSVGSize() {
-        const rect = this.image.getBoundingClientRect();
         this.svg.setAttribute('width', this.image.offsetWidth);
         this.svg.setAttribute('height', this.image.offsetHeight);
         this.svg.setAttribute('viewBox', `0 0 ${this.image.offsetWidth} ${this.image.offsetHeight}`);
@@ -96,7 +101,7 @@ class InteractiveMap {
         
         // Render points for each room
         Object.entries(itemsByRoom).forEach(([room, roomItems]) => {
-            if (roomItems[0].coordinates.x !== null && roomItems[0].coordinates.y !== null) {
+            if (roomItems[0].coordinates && roomItems[0].coordinates.x !== null && roomItems[0].coordinates.y !== null) {
                 this.renderPoint(roomItems);
             }
         });
@@ -189,7 +194,6 @@ class InteractiveMap {
         this.tooltipElement.classList.remove('hidden');
         
         // Position tooltip
-        const rect = this.container.getBoundingClientRect();
         this.tooltipElement.style.left = event.pageX + 10 + 'px';
         this.tooltipElement.style.top = event.pageY + 10 + 'px';
     }
@@ -306,6 +310,4 @@ class InteractiveMap {
 }
 
 // Make available globally for browser use
-if (typeof window !== 'undefined') {
-    window.InteractiveMap = InteractiveMap;
-}
+window.InteractiveMap = InteractiveMap;
