@@ -4,9 +4,8 @@
  */
 
 class StatisticsController {
-    constructor(inventoryService, i18nService) {
+    constructor(inventoryService) {
         this.inventoryService = inventoryService;
-        this.i18nService = i18nService;
     }
 
     /**
@@ -14,14 +13,11 @@ class StatisticsController {
      */
     async init() {
         try {
-            // i18n is already initialized by Application
-            this.i18nService.updatePageTranslations();
-            
             await this.loadData();
             this.updateStatistics();
         } catch (error) {
             console.error('Error initializing statistics page:', error);
-            alert(this.i18nService.translate('errors.loadingData'));
+            alert('Erreur lors du chargement des données');
         }
     }
 
@@ -54,15 +50,15 @@ class StatisticsController {
         const detailedStatsHTML = `
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
                 <div class="info-section">
-                    <h3 data-i18n="statistics.byFloor">${this.i18nService.translate('statistics.byFloor')}</h3>
+                    <h3>Par Étage</h3>
                     ${this.generateStatsTable(stats.byFloor)}
                 </div>
                 <div class="info-section">
-                    <h3 data-i18n="statistics.byFamily">${this.i18nService.translate('statistics.byFamily')}</h3>
+                    <h3>Par Famille</h3>
                     ${this.generateStatsTable(stats.byFamily)}
                 </div>
                 <div class="info-section">
-                    <h3 data-i18n="statistics.byType">${this.i18nService.translate('statistics.byType')}</h3>
+                    <h3>Par Type</h3>
                     ${this.generateStatsTable(stats.byType, 10)}
                 </div>
             </div>

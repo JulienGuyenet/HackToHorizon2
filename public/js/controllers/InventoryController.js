@@ -4,9 +4,8 @@
  */
 
 class InventoryController {
-    constructor(inventoryService, i18nService) {
+    constructor(inventoryService) {
         this.inventoryService = inventoryService;
-        this.i18nService = i18nService;
         this.container = document.getElementById('items-container');
     }
 
@@ -15,16 +14,13 @@ class InventoryController {
      */
     async init() {
         try {
-            // i18n is already initialized by Application
-            this.i18nService.updatePageTranslations();
-            
             await this.loadData();
             this.setupEventListeners();
             this.populateFilters();
             this.render();
         } catch (error) {
             console.error('Error initializing inventory page:', error);
-            this.showError(this.i18nService.translate('errors.loadingData'));
+            this.showError('Erreur lors du chargement des données');
         }
     }
 
@@ -119,7 +115,7 @@ class InventoryController {
 
         const html = `
             <div style="margin-bottom: 15px; color: #495057;">
-                <strong>${items.length}</strong> ${this.i18nService.translate('inventory.itemsFound')}
+                <strong>${items.length}</strong> item(s) trouvé(s)
             </div>
             <div class="items-grid">
                 ${items.map(item => this.generateItemCard(item)).join('')}
@@ -136,8 +132,8 @@ class InventoryController {
         this.container.innerHTML = `
             <div class="empty-state">
                 <div class="empty-state-icon">📭</div>
-                <h3 data-i18n="inventory.noResults">${this.i18nService.translate('inventory.noResults')}</h3>
-                <p data-i18n="inventory.noResultsHint">${this.i18nService.translate('inventory.noResultsHint')}</p>
+                <h3>Aucun item trouvé</h3>
+                <p>Essayez de modifier vos critères de recherche</p>
             </div>
         `;
     }
@@ -148,7 +144,7 @@ class InventoryController {
     generateItemCard(item) {
         const userRow = item.user ? `
             <div class="item-detail">
-                <span class="label">${this.i18nService.translate('inventory.user')}:</span>
+                <span class="label">Utilisateur:</span>
                 <span class="value">${this.escapeHtml(item.user)}</span>
             </div>
         ` : '';
@@ -161,21 +157,21 @@ class InventoryController {
                 </div>
                 <div class="item-body">
                     <div class="item-detail">
-                        <span class="label">${this.i18nService.translate('inventory.reference')}:</span>
+                        <span class="label">Référence:</span>
                         <span class="value">${this.escapeHtml(item.reference)}</span>
                     </div>
                     <div class="item-detail">
-                        <span class="label">${this.i18nService.translate('inventory.type')}:</span>
+                        <span class="label">Type:</span>
                         <span class="value">${this.escapeHtml(item.type)}</span>
                     </div>
                     <div class="item-detail">
-                        <span class="label">${this.i18nService.translate('inventory.family')}:</span>
+                        <span class="label">Famille:</span>
                         <span class="value">${this.escapeHtml(item.family)}</span>
                     </div>
                     ${userRow}
                     <div class="item-detail">
-                        <span class="label">${this.i18nService.translate('inventory.location')}:</span>
-                        <span class="value">${this.escapeHtml(item.location.floor || 'N/A')} - ${this.i18nService.translate('inventory.room')} ${this.escapeHtml(item.location.room || 'N/A')}</span>
+                        <span class="label">Localisation:</span>
+                        <span class="value">${this.escapeHtml(item.location.floor || 'N/A')} - Salle ${this.escapeHtml(item.location.room || 'N/A')}</span>
                     </div>
                 </div>
             </div>
@@ -189,7 +185,7 @@ class InventoryController {
         this.container.innerHTML = `
             <div class="empty-state">
                 <div class="empty-state-icon">⚠️</div>
-                <h3>${this.i18nService.translate('errors.generic')}</h3>
+                <h3>Une erreur est survenue</h3>
                 <p>${this.escapeHtml(message)}</p>
             </div>
         `;

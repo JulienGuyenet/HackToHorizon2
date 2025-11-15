@@ -6,7 +6,6 @@
 class Application {
     constructor() {
         this.apiClient = null;
-        this.i18nService = null;
         this.furnitureRepository = null;
         this.locationRepository = null;
         this.inventoryService = null;
@@ -23,18 +22,6 @@ class Application {
             useHttps: false
         });
 
-        // Initialize I18n Service
-        this.i18nService = new I18nService({
-            supportedLanguages: ['fr', 'en'],
-            defaultLanguage: 'fr'
-        });
-        
-        // Make i18nService globally available for API client
-        window.I18nService = this.i18nService;
-        
-        // Initialize i18n (load translations)
-        await this.i18nService.init();
-
         // Initialize Repositories
         this.furnitureRepository = new FurnitureRepository(this.apiClient);
         this.locationRepository = new LocationRepository(this.apiClient);
@@ -46,13 +33,6 @@ class Application {
         );
 
         return this;
-    }
-
-    /**
-     * Get the I18n Service instance
-     */
-    getI18nService() {
-        return this.i18nService;
     }
 
     /**
@@ -73,21 +53,21 @@ class Application {
      * Create controller for inventory page
      */
     createInventoryController() {
-        return new InventoryController(this.inventoryService, this.i18nService);
+        return new InventoryController(this.inventoryService);
     }
 
     /**
      * Create controller for map page
      */
     createMapController() {
-        return new MapController(this.inventoryService, this.i18nService);
+        return new MapController(this.inventoryService);
     }
 
     /**
      * Create controller for statistics page
      */
     createStatisticsController() {
-        return new StatisticsController(this.inventoryService, this.i18nService);
+        return new StatisticsController(this.inventoryService);
     }
 }
 

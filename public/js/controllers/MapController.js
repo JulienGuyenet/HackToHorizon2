@@ -4,9 +4,8 @@
  */
 
 class MapController {
-    constructor(inventoryService, i18nService) {
+    constructor(inventoryService) {
         this.inventoryService = inventoryService;
-        this.i18nService = i18nService;
         this.interactiveMap = null;
         
         this.floorImageMap = {
@@ -23,15 +22,12 @@ class MapController {
      */
     async init() {
         try {
-            // i18n is already initialized by Application
-            this.i18nService.updatePageTranslations();
-            
             await this.loadData();
             this.setupEventListeners();
             this.populateFloorFilter();
         } catch (error) {
             console.error('Error initializing map page:', error);
-            alert(this.i18nService.translate('errors.loadingData'));
+            alert('Erreur lors du chargement des données');
         }
     }
 
@@ -91,7 +87,7 @@ class MapController {
     loadMap() {
         const floor = document.getElementById('map-floor-filter').value;
         if (!floor) {
-            alert(this.i18nService.translate('map.selectFloorPrompt'));
+            alert('Veuillez sélectionner un étage');
             return;
         }
 
@@ -155,8 +151,8 @@ class MapController {
         
         wrapper.innerHTML = `
             <div class="empty-state" style="display: flex; color: #fff;">
-                <h3>${this.i18nService.translate('map.imageNotAvailable')}</h3>
-                <p>${this.i18nService.translate('map.imageNotAvailableHint')}</p>
+                <h3>Image non disponible</h3>
+                <p>Le plan pour cet étage n'est pas disponible</p>
             </div>
         `;
     }

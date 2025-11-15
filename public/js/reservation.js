@@ -46,9 +46,9 @@ async function checkApiStatus() {
         // Use localized error message if available
         const errorMessage = error instanceof APIError 
             ? error.getLocalizedMessage()
-            : i18next.t('reservation.apiError');
+            : 'Erreur de connexion à l\'API';
         
-        statusText.textContent = errorMessage + ' - ' + i18next.t('reservation.apiErrorHint');
+        statusText.textContent = errorMessage + ' - ' + 'Assurez-vous que l\'API est accessible';
     }
 }
 
@@ -108,7 +108,7 @@ async function handleSearch() {
     const searchTerm = document.getElementById('furnitureSearch').value.trim();
     
     if (!searchTerm) {
-        showMessage(i18next.t('reservation.validationError'), 'error');
+        showMessage('Veuillez remplir tous les champs obligatoires', 'error');
         return;
     }
     
@@ -139,7 +139,7 @@ async function handleSearch() {
         // Use localized error message
         const errorMessage = error instanceof APIError 
             ? error.getLocalizedMessage()
-            : i18next.t('reservation.apiError');
+            : 'Erreur de connexion à l\'API';
         
         showMessage(errorMessage, 'error');
     } finally {
@@ -157,7 +157,7 @@ function displaySearchResults(results) {
     if (results.length === 0) {
         furnitureList.innerHTML = `
             <div class="no-results">
-                <p data-i18n="reservation.noResults">${i18next.t('reservation.noResults')}</p>
+                <p>Aucun résultat trouvé</p>
             </div>
         `;
         searchResultsDiv.style.display = 'block';
@@ -168,25 +168,25 @@ function displaySearchResults(results) {
     furnitureList.innerHTML = results.map(item => `
         <div class="furniture-card" data-furniture-id="${item.id}">
             <div class="furniture-card-header">
-                <h4>${item.designation || i18next.t('reservation.designation')}</h4>
+                <h4>${item.designation || 'Désignation'}</h4>
                 <span class="furniture-reference">${item.reference || ''}</span>
             </div>
             <div class="furniture-card-body">
                 <div class="furniture-info">
-                    <span class="info-label" data-i18n="reservation.family">${i18next.t('reservation.family')}:</span>
+                    <span class="info-label">Famille:</span>
                     <span class="info-value">${item.famille || '-'}</span>
                 </div>
                 <div class="furniture-info">
-                    <span class="info-label" data-i18n="reservation.type">${i18next.t('reservation.type')}:</span>
+                    <span class="info-label">Type:</span>
                     <span class="info-value">${item.type || '-'}</span>
                 </div>
                 <div class="furniture-info">
-                    <span class="info-label" data-i18n="reservation.currentLocation">${i18next.t('reservation.currentLocation')}:</span>
+                    <span class="info-label">Localisation actuelle:</span>
                     <span class="info-value">${formatLocation(item.location)}</span>
                 </div>
             </div>
             <button class="btn btn-primary select-furniture-btn" data-furniture-id="${item.id}">
-                ${i18next.t('reservation.selectFromList')}
+                Sélectionner dans la liste
             </button>
         </div>
     `).join('');
@@ -210,8 +210,8 @@ function formatLocation(location) {
     
     const parts = [];
     if (location.buildingName) parts.push(location.buildingName);
-    if (location.floor) parts.push(i18next.t('filters.floor') + ' ' + location.floor);
-    if (location.room) parts.push(i18next.t('filters.room') + ' ' + location.room);
+    if (location.floor) parts.push('Étage ' + location.floor);
+    if (location.room) parts.push('Salle ' + location.room);
     
     return parts.length > 0 ? parts.join(', ') : '-';
 }
@@ -241,7 +241,7 @@ async function selectFurniture(furnitureId) {
         // Use localized error message
         const errorMessage = error instanceof APIError 
             ? error.getLocalizedMessage()
-            : i18next.t('reservation.error');
+            : 'Erreur lors de la création de la réservation';
         
         showMessage(errorMessage, 'error');
     } finally {
@@ -258,27 +258,27 @@ function displaySelectedFurniture(furniture) {
     
     detailsDiv.innerHTML = `
         <div class="furniture-detail-row">
-            <span class="detail-label" data-i18n="reservation.reference">${i18next.t('reservation.reference')}:</span>
+            <span class="detail-label">Référence:</span>
             <span class="detail-value">${furniture.reference || '-'}</span>
         </div>
         <div class="furniture-detail-row">
-            <span class="detail-label" data-i18n="reservation.designation">${i18next.t('reservation.designation')}:</span>
+            <span class="detail-label">Désignation:</span>
             <span class="detail-value">${furniture.designation || '-'}</span>
         </div>
         <div class="furniture-detail-row">
-            <span class="detail-label" data-i18n="reservation.family">${i18next.t('reservation.family')}:</span>
+            <span class="detail-label">Famille:</span>
             <span class="detail-value">${furniture.famille || '-'}</span>
         </div>
         <div class="furniture-detail-row">
-            <span class="detail-label" data-i18n="reservation.type">${i18next.t('reservation.type')}:</span>
+            <span class="detail-label">Type:</span>
             <span class="detail-value">${furniture.type || '-'}</span>
         </div>
         <div class="furniture-detail-row">
-            <span class="detail-label" data-i18n="reservation.supplier">${i18next.t('reservation.supplier')}:</span>
+            <span class="detail-label">Fournisseur:</span>
             <span class="detail-value">${furniture.fournisseur || '-'}</span>
         </div>
         <div class="furniture-detail-row">
-            <span class="detail-label" data-i18n="reservation.currentLocation">${i18next.t('reservation.currentLocation')}:</span>
+            <span class="detail-label">Localisation actuelle:</span>
             <span class="detail-value">${formatLocation(furniture.location)}</span>
         </div>
     `;
@@ -304,13 +304,13 @@ async function checkAvailability() {
     
     // Validate dates
     if (endDateTime <= startDateTime) {
-        showAvailability(false, i18next.t('reservation.dateError'));
+        showAvailability(false, 'La date de fin doit être postérieure à la date de début');
         return;
     }
     
     // For now, we'll assume the furniture is available
     // In a real implementation, you would check against existing reservations
-    showAvailability(true, i18next.t('reservation.available'));
+    showAvailability(true, 'Disponible');
 }
 
 /**
@@ -331,7 +331,7 @@ function showAvailability(isAvailable, message) {
 async function handleSubmitReservation() {
     // Validate furniture selection
     if (!selectedFurniture) {
-        showMessage(i18next.t('reservation.noFurnitureSelected'), 'error');
+        showMessage('Veuillez sélectionner un meuble', 'error');
         return;
     }
     
@@ -349,7 +349,7 @@ async function handleSubmitReservation() {
     
     // Validate required fields
     if (!startDate || !startTime || !endDate || !endTime || !userName || !userEmail) {
-        showMessage(i18next.t('reservation.validationError'), 'error');
+        showMessage('Veuillez remplir tous les champs obligatoires', 'error');
         return;
     }
     
@@ -358,7 +358,7 @@ async function handleSubmitReservation() {
     const endDateTime = new Date(`${endDate}T${endTime}`);
     
     if (endDateTime <= startDateTime) {
-        showMessage(i18next.t('reservation.dateError'), 'error');
+        showMessage('La date de fin doit être postérieure à la date de début', 'error');
         return;
     }
     
@@ -388,7 +388,7 @@ async function handleSubmitReservation() {
         // Simulate API call
         await new Promise(resolve => setTimeout(resolve, 1000));
         
-        showMessage(i18next.t('reservation.success'), 'success');
+        showMessage('Réservation créée avec succès', 'success');
         
         // Reset form after success
         setTimeout(() => {
@@ -400,7 +400,7 @@ async function handleSubmitReservation() {
         // Use localized error message
         const errorMessage = error instanceof APIError 
             ? error.getLocalizedMessage()
-            : i18next.t('reservation.error');
+            : 'Erreur lors de la création de la réservation';
         
         showMessage(errorMessage, 'error');
     } finally {
@@ -412,7 +412,7 @@ async function handleSubmitReservation() {
  * Handle cancel reservation
  */
 function handleCancelReservation() {
-    if (confirm(i18next.t('reservation.confirmDelete'))) {
+    if (confirm('Êtes-vous sûr de vouloir supprimer cette réservation ?')) {
         resetForm();
     }
 }

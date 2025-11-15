@@ -38,9 +38,6 @@ class ApiClient {
      * Get Accept-Language header
      */
     getAcceptLanguageHeader() {
-        if (typeof window !== 'undefined' && window.I18nService) {
-            return window.I18nService.getAcceptLanguageHeader();
-        }
         return 'fr-FR,fr;q=0.9,en;q=0.8';
     }
 
@@ -176,10 +173,7 @@ class APIError extends Error {
      * Get localized error message
      */
     getLocalizedMessage() {
-        if (typeof window !== 'undefined' && window.I18nService) {
-            return window.I18nService.translateError(this.errorCode, this.message);
-        }
-        return this.message || 'An error occurred';
+        return this.message || 'Une erreur est survenue';
     }
 }
 
