@@ -1,0 +1,72 @@
+{
+  "app": {
+    "title": "Inventory Management System",
+    "subtitle": "VIOTTE Building - Interactive Management"
+  },
+  "nav": {
+    "inventory": "Inventory",
+    "map": "Interactive Map",
+    "statistics": "Statistics"
+  },
+  "filters": {
+    "search": "Search",
+    "searchPlaceholder": "Name, reference, barcode...",
+    "floor": "Floor",
+    "allFloors": "All floors",
+    "room": "Room",
+    "allRooms": "All rooms",
+    "type": "Type",
+    "allTypes": "All types",
+    "family": "Family",
+    "allFamilies": "All families",
+    "supplier": "Supplier",
+    "allSuppliers": "All suppliers",
+    "user": "User",
+    "allUsers": "All users",
+    "reset": "Reset",
+    "apply": "Apply"
+  },
+  "inventory": {
+    "title": "Inventory",
+    "loading": "Loading data...",
+    "noResults": "No items found",
+    "noResultsHint": "Try modifying your search criteria",
+    "itemsFound": "item(s) found",
+    "reference": "Reference",
+    "designation": "Designation",
+    "type": "Type",
+    "family": "Family",
+    "user": "User",
+    "location": "Location",
+    "supplier": "Supplier",
+    "barcode": "Barcode",
+    "serialNumber": "Serial Number",
+    "deliveryDate": "Delivery Date",
+    "information": "Information",
+    "room": "Room"
+  },
+  "map": {
+    "title": "Interactive Map",
+    "selectFloor": "Select floor",
+    "loadMap": "Load map",
+    "selectFloorPrompt": "Please select a floor",
+    "imageNotAvailable": "Image not available",
+    "imageNotAvailableHint": "The map for this floor is not available",
+    "close": "Close"
+  },
+  "statistics": {
+    "title": "Global Statistics",
+    "totalItems": "Total Items",
+    "totalFloors": "Floors",
+    "totalRooms": "Rooms",
+    "totalFamilies": "Families",
+    "byFloor": "By Floor",
+    "byFamily": "By Family",
+    "byType": "By Type",
+    "unknown": "Unknown"
+  },
+  "errors": {
+    "loadingData": "Error loading data",
+    "generic": "An error occurred"
+  }
+}

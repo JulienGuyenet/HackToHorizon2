@@ -5,99 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Système de Gestion d'Inventaire - VIOTTE</title>
     <link rel="stylesheet" href="styles.css">
+    <script>
+        // Redirect to inventory page
+        window.location.href = 'inventory.html';
+    </script>
 </head>
 <body>
     <div class="app-container">
         <header class="app-header">
             <h1>Système de Gestion d'Inventaire</h1>
-            <p>Bâtiment VIOTTE - Gestion Interactive</p>
+            <p>Redirection en cours...</p>
         </header>
-
-        <nav class="app-tabs">
-            <button class="tab-button active" data-tab="inventory">Inventaire</button>
-            <button class="tab-button" data-tab="map">Carte Interactive</button>
-            <button class="tab-button" data-tab="statistics">Statistiques</button>
-        </nav>
-
-        <main class="app-content">
-            <!-- Inventory Tab -->
-            <div id="inventory-tab" class="tab-pane active">
-                <div class="control-panel">
-                    <div class="control-row">
-                        <div class="control-group">
-                            <label for="search-input">Rechercher</label>
-                            <input type="text" id="search-input" placeholder="Nom, référence, code barre...">
-                        </div>
-                        <div class="control-group">
-                            <label for="floor-filter">Étage</label>
-                            <select id="floor-filter">
-                                <option value="">Tous les étages</option>
-                            </select>
-                        </div>
-                        <div class="control-group">
-                            <label for="room-filter">Salle</label>
-                            <select id="room-filter">
-                                <option value="">Toutes les salles</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="control-row">
-                        <button class="btn btn-secondary" id="reset-filters">Réinitialiser</button>
-                        <button class="btn btn-primary" id="apply-filters">Appliquer</button>
-                    </div>
-                </div>
-
-                <div id="items-container">
-                    <div class="loading">Chargement des données...</div>
-                </div>
-            </div>
-
-            <!-- Map Tab -->
-            <div id="map-tab" class="tab-pane">
-                <div class="map-controls">
-                    <div class="control-group">
-                        <label for="map-floor-filter">Sélectionner l'étage</label>
-                        <select id="map-floor-filter">
-                            <option value="">Sélectionner un étage</option>
-                        </select>
-                    </div>
-                    <button class="btn btn-primary" id="load-map">Charger la carte</button>
-                </div>
-            </div>
-
-            <!-- Statistics Tab -->
-            <div id="statistics-tab" class="tab-pane">
-                <h2 style="margin-bottom: 20px;">Statistiques Globales</h2>
-                
-                <div class="stats-container" id="global-stats">
-                    <div class="stat-card">
-                        <div class="stat-label">Total Items</div>
-                        <div class="stat-value" id="total-items">-</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-label">Étages</div>
-                        <div class="stat-value" id="total-floors">-</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-label">Salles</div>
-                        <div class="stat-value" id="total-rooms">-</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-label">Familles</div>
-                        <div class="stat-value" id="total-families">-</div>
-                    </div>
-                </div>
-
-                <div id="detailed-stats" style="margin-top: 30px;"></div>
-            </div>
-        </main>
     </div>
-
-    <!-- Map Container Overlay (outside main structure) -->
-    <div class="map-container-wrapper">
-        <div id="map-container"></div>
-    </div>
-
-    <script src="app.js"></script>
 </body>
 </html>

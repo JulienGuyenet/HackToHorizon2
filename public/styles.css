@@ -84,6 +84,80 @@ body {
     background: #fff;
 }
 
+/* Content Wrapper with Sidebar */
+.content-wrapper {
+    display: flex;
+    gap: 1.5rem;
+    min-height: 600px;
+}
+
+/* Filter Sidebar */
+.filter-sidebar {
+    flex: 0 0 280px;
+    background: #f9f9f9;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 1.5rem;
+    height: fit-content;
+    position: sticky;
+    top: 1.5rem;
+}
+
+.filter-sidebar h2 {
+    font-size: 1.2rem;
+    color: #2c3e50;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.8rem;
+    border-bottom: 2px solid #2c3e50;
+}
+
+.filter-group {
+    margin-bottom: 1rem;
+}
+
+.filter-group label {
+    display: block;
+    font-size: 0.9rem;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+    color: #555;
+}
+
+.filter-group input,
+.filter-group select {
+    width: 100%;
+    padding: 0.6rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 0.95rem;
+    transition: border-color 0.2s;
+}
+
+.filter-group input:focus,
+.filter-group select:focus {
+    outline: none;
+    border-color: #2c3e50;
+}
+
+.filter-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-top: 1.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid #e0e0e0;
+}
+
+.filter-actions .btn {
+    width: 100%;
+}
+
+/* Main Content Area */
+.main-content {
+    flex: 1;
+    min-width: 0;
+}
+
 .tab-pane {
     display: none;
     animation: fadeIn 0.3s;
@@ -456,6 +530,16 @@ body {
 
     .app-content {
         padding: 1rem;
+    }
+
+    .content-wrapper {
+        flex-direction: column;
+    }
+
+    .filter-sidebar {
+        flex: 1;
+        position: static;
+        width: 100%;
     }
 
     .control-panel {

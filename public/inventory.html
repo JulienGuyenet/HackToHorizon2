@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="inventory.title">Inventaire</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="app-container">
+        <header class="app-header">
+            <h1 data-i18n="app.title">Système de Gestion d'Inventaire</h1>
+            <p data-i18n="app.subtitle">Bâtiment VIOTTE - Gestion Interactive</p>
+        </header>
+
+        <nav class="app-tabs">
+            <a href="inventory.html" class="tab-button active" data-i18n="nav.inventory">Inventaire</a>
+            <a href="map.html" class="tab-button" data-i18n="nav.map">Carte Interactive</a>
+            <a href="statistics.html" class="tab-button" data-i18n="nav.statistics">Statistiques</a>
+        </nav>
+
+        <main class="app-content">
+            <div class="content-wrapper">
+                <!-- Left Sidebar Filter Panel -->
+                <aside class="filter-sidebar">
+                    <h2 data-i18n="filters.search">Filtres</h2>
+                    
+                    <div class="filter-group">
+                        <label for="search-input" data-i18n="filters.search">Rechercher</label>
+                        <input type="text" id="search-input" data-i18n-placeholder="filters.searchPlaceholder">
+                    </div>
+
+                    <div class="filter-group">
+                        <label for="floor-filter" data-i18n="filters.floor">Étage</label>
+                        <select id="floor-filter">
+                            <option value="" data-i18n="filters.allFloors">Tous les étages</option>
+                        </select>
+                    </div>
+
+                    <div class="filter-group">
+                        <label for="room-filter" data-i18n="filters.room">Salle</label>
+                        <select id="room-filter">
+                            <option value="" data-i18n="filters.allRooms">Toutes les salles</option>
+                        </select>
+                    </div>
+
+                    <div class="filter-group">
+                        <label for="type-filter" data-i18n="filters.type">Type</label>
+                        <select id="type-filter">
+                            <option value="" data-i18n="filters.allTypes">Tous les types</option>
+                        </select>
+                    </div>
+
+                    <div class="filter-group">
+                        <label for="family-filter" data-i18n="filters.family">Famille</label>
+                        <select id="family-filter">
+                            <option value="" data-i18n="filters.allFamilies">Toutes les familles</option>
+                        </select>
+                    </div>
+
+                    <div class="filter-group">
+                        <label for="supplier-filter" data-i18n="filters.supplier">Fournisseur</label>
+                        <select id="supplier-filter">
+                            <option value="" data-i18n="filters.allSuppliers">Tous les fournisseurs</option>
+                        </select>
+                    </div>
+
+                    <div class="filter-group">
+                        <label for="user-filter" data-i18n="filters.user">Utilisateur</label>
+                        <select id="user-filter">
+                            <option value="" data-i18n="filters.allUsers">Tous les utilisateurs</option>
+                        </select>
+                    </div>
+
+                    <div class="filter-actions">
+                        <button class="btn btn-secondary" id="reset-filters" data-i18n="filters.reset">Réinitialiser</button>
+                        <button class="btn btn-primary" id="apply-filters" data-i18n="filters.apply">Appliquer</button>
+                    </div>
+                </aside>
+
+                <!-- Main Content Area -->
+                <div class="main-content">
+                    <div id="items-container">
+                        <div class="loading" data-i18n="inventory.loading">Chargement des données...</div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/i18next@21.10.0/i18next.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/i18next-http-backend@2.1.0/i18nextHttpBackend.min.js"></script>
+    <script src="js/i18n.js"></script>
+    <script src="js/dataLoader.js"></script>
+    <script src="js/inventory.js"></script>
+</body>
+</html>
