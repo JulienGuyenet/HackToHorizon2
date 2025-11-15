@@ -30,8 +30,15 @@
 
         <main class="app-content">
             <div class="map-page-container">
+                <!-- Hamburger Toggle Button -->
+                <button class="map-filter-toggle" id="filter-toggle-btn" title="Afficher/Masquer les filtres">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+
                 <!-- Transparent Filter Panel - Top Right -->
-                <div class="map-filter-panel">
+                <div class="map-filter-panel collapsed" id="map-filter-panel">
                     <h3>Filtres</h3>
                     <div class="filter-group">
                         <label for="map-floor-filter">Étage</label>
