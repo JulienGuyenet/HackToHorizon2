@@ -13,9 +13,11 @@ class InventoryController {
      * Initialize the page
      */
     async init() {
+        // Setup event listeners first (including sidebar toggle)
+        this.setupEventListeners();
+        
         try {
             await this.loadData();
-            this.setupEventListeners();
             this.populateFilters();
             this.render();
         } catch (error) {
@@ -40,6 +42,34 @@ class InventoryController {
         document.getElementById('reset-filters').addEventListener('click', () => this.resetFilters());
         document.getElementById('search-input').addEventListener('keyup', (e) => {
             if (e.key === 'Enter') this.applyFilters();
+        });
+        
+        // Setup sidebar toggle
+        this.setupSidebarToggle();
+    }
+    
+    /**
+     * Setup sidebar toggle functionality
+     */
+    setupSidebarToggle() {
+        const toggleBtn = document.getElementById('sidebar-toggle');
+        const sidebar = document.getElementById('filter-sidebar');
+        
+        // Load saved state from localStorage
+        const isSidebarCollapsed = localStorage.getItem('sidebarCollapsed') === 'true';
+        if (isSidebarCollapsed) {
+            sidebar.classList.add('collapsed');
+            toggleBtn.classList.add('sidebar-collapsed');
+        }
+        
+        // Toggle sidebar on button click
+        toggleBtn.addEventListener('click', () => {
+            sidebar.classList.toggle('collapsed');
+            toggleBtn.classList.toggle('sidebar-collapsed');
+            
+            // Save state to localStorage
+            const isCollapsed = sidebar.classList.contains('collapsed');
+            localStorage.setItem('sidebarCollapsed', isCollapsed);
         });
     }
 
