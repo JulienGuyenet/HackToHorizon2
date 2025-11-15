@@ -12,8 +12,8 @@
             <h1 data-i18n="app.title">Système de Gestion d'Inventaire</h1>
             <p data-i18n="app.subtitle">Bâtiment VIOTTE - Gestion Interactive</p>
             <div class="language-switcher">
-                <button onclick="changeLanguage('fr')" class="lang-btn">FR</button>
-                <button onclick="changeLanguage('en')" class="lang-btn">EN</button>
+                <button class="lang-btn">FR</button>
+                <button class="lang-btn">EN</button>
             </div>
         </header>
 
@@ -115,29 +115,7 @@
     <!-- Utilities -->
     <script src="js/utils/Utils.js"></script>
     
-    <!-- Legacy support (for InteractiveMap compatibility) -->
-    <script src="js/interactiveMap.js"></script>
-    
-    <script>
-        // Bootstrap application
-        let app;
-        let inventoryController;
-        
-        (async function() {
-            try {
-                // Initialize application
-                app = await new Application().init();
-                
-                // Create and initialize controller
-                inventoryController = app.createInventoryController();
-                await inventoryController.init();
-                
-                // Make changeLanguage globally available for buttons
-                window.changeLanguage = (lng) => app.getI18nService().changeLanguage(lng);
-            } catch (error) {
-                console.error('Failed to initialize application:', error);
-            }
-        })();
-    </script>
+    <!-- Bootstrap -->
+    <script src="js/bootstrap.js"></script>
 </body>
 </html>
