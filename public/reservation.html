@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title data-i18n="reservation.title">Réservation de Mobilier</title>
+    <title>Réservation de Mobilier</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -13,23 +13,19 @@
                 <img src="assets/images/logo_interreg.png" alt="Logo">
             </div>
             <div class="header-center">
-                <h1 data-i18n="app.title">Système de Gestion d'Inventaire</h1>
-                <p data-i18n="app.subtitle">Bâtiment VIOTTE - Gestion Interactive</p>
+                <h1>Système de Gestion d'Inventaire</h1>
+                <p>Bâtiment VIOTTE - Gestion Interactive</p>
             </div>
             <div class="header-logo-right">
                 <img src="assets/images/logo_rgbfc.png" alt="Logo">
             </div>
-            <div class="language-switcher">
-                <button class="lang-btn">FR</button>
-                <button class="lang-btn">EN</button>
-            </div>
         </header>
 
         <nav class="app-tabs">
-            <a href="inventory.html" class="tab-button" data-i18n="nav.inventory">Inventaire</a>
-            <a href="map.html" class="tab-button" data-i18n="nav.map">Carte Interactive</a>
-            <a href="statistics.html" class="tab-button" data-i18n="nav.statistics">Statistiques</a>
-            <a href="reservation.html" class="tab-button active" data-i18n="nav.reservation">Réservations</a>
+            <a href="inventory.html" class="tab-button">Inventaire</a>
+            <a href="map.html" class="tab-button">Carte Interactive</a>
+            <a href="statistics.html" class="tab-button">Statistiques</a>
+            <a href="reservation.html" class="tab-button active">Réservations</a>
         </nav>
 
         <main class="main-content">
@@ -40,36 +36,35 @@
 
             <!-- Reservation Form Section -->
             <div class="reservation-container">
-                <h2 data-i18n="reservation.title">Réservation de Mobilier</h2>
+                <h2>Réservation de Mobilier</h2>
 
                 <!-- Step 1: Furniture Selection -->
                 <section class="reservation-section">
-                    <h3 data-i18n="reservation.selectFurniture">Sélectionner le mobilier</h3>
+                    <h3>Sélectionner le mobilier</h3>
                     
                     <div class="search-box">
                         <input 
                             type="text" 
                             id="furnitureSearch" 
                             class="search-input"
-                            data-i18n="[placeholder]reservation.searchPlaceholder"
                             placeholder="Entrez une référence, désignation ou code barre..."
                         >
-                        <button id="searchBtn" class="btn btn-primary" data-i18n="reservation.searchFurniture">
+                        <button id="searchBtn" class="btn btn-primary">
                             Rechercher
                         </button>
                     </div>
 
                     <!-- Search Results -->
                     <div id="searchResults" class="search-results" style="display: none;">
-                        <h4 data-i18n="reservation.searchResults">Résultats de recherche</h4>
+                        <h4>Résultats de recherche</h4>
                         <div id="furnitureList" class="furniture-list"></div>
                     </div>
 
                     <!-- Selected Furniture Display -->
                     <div id="selectedFurnitureCard" class="selected-furniture-card" style="display: none;">
-                        <h4 data-i18n="reservation.furnitureDetails">Détails du mobilier</h4>
+                        <h4>Détails du mobilier</h4>
                         <div id="selectedFurnitureDetails" class="furniture-details"></div>
-                        <button id="changeFurnitureBtn" class="btn btn-secondary" data-i18n="reservation.selectFurniture">
+                        <button id="changeFurnitureBtn" class="btn btn-secondary">
                             Changer de mobilier
                         </button>
                     </div>
@@ -77,26 +72,26 @@
 
                 <!-- Step 2: Reservation Period -->
                 <section class="reservation-section">
-                    <h3 data-i18n="reservation.reservationPeriod">Période de réservation</h3>
+                    <h3>Période de réservation</h3>
                     
                     <div class="form-row">
                         <div class="form-group">
-                            <label for="startDate" data-i18n="reservation.startDate">Date de début</label>
+                            <label for="startDate">Date de début</label>
                             <input type="date" id="startDate" class="form-input" required>
                         </div>
                         <div class="form-group">
-                            <label for="startTime" data-i18n="reservation.startTime">Heure de début</label>
+                            <label for="startTime">Heure de début</label>
                             <input type="time" id="startTime" class="form-input" required>
                         </div>
                     </div>
 
                     <div class="form-row">
                         <div class="form-group">
-                            <label for="endDate" data-i18n="reservation.endDate">Date de fin</label>
+                            <label for="endDate">Date de fin</label>
                             <input type="date" id="endDate" class="form-input" required>
                         </div>
                         <div class="form-group">
-                            <label for="endTime" data-i18n="reservation.endTime">Heure de fin</label>
+                            <label for="endTime">Heure de fin</label>
                             <input type="time" id="endTime" class="form-input" required>
                         </div>
                     </div>
@@ -109,48 +104,46 @@
 
                 <!-- Step 3: User Information -->
                 <section class="reservation-section">
-                    <h3 data-i18n="reservation.userInfo">Informations de l'utilisateur</h3>
+                    <h3>Informations de l'utilisateur</h3>
                     
                     <div class="form-row">
                         <div class="form-group">
-                            <label for="userName" data-i18n="reservation.userName">Nom</label>
+                            <label for="userName">Nom</label>
                             <input type="text" id="userName" class="form-input" required>
                         </div>
                         <div class="form-group">
-                            <label for="userEmail" data-i18n="reservation.userEmail">Email</label>
+                            <label for="userEmail">Email</label>
                             <input type="email" id="userEmail" class="form-input" required>
                         </div>
                     </div>
 
                     <div class="form-row">
                         <div class="form-group">
-                            <label for="userPhone" data-i18n="reservation.userPhone">Téléphone</label>
+                            <label for="userPhone">Téléphone</label>
                             <input type="tel" id="userPhone" class="form-input">
                         </div>
                         <div class="form-group">
-                            <label for="department" data-i18n="reservation.department">Département</label>
+                            <label for="department">Département</label>
                             <input type="text" id="department" class="form-input">
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label for="location" data-i18n="reservation.location">Lieu d'utilisation</label>
+                        <label for="location">Lieu d'utilisation</label>
                         <input 
                             type="text" 
                             id="location" 
                             class="form-input"
-                            data-i18n="[placeholder]reservation.locationPlaceholder"
                             placeholder="Où le mobilier sera-t-il utilisé ?"
                         >
                     </div>
 
                     <div class="form-group">
-                        <label for="purpose" data-i18n="reservation.purpose">Motif de la réservation</label>
+                        <label for="purpose">Motif de la réservation</label>
                         <textarea 
                             id="purpose" 
                             class="form-textarea" 
                             rows="4"
-                            data-i18n="[placeholder]reservation.purposePlaceholder"
                             placeholder="Décrivez brièvement l'utilisation prévue..."
                         ></textarea>
                     </div>
@@ -158,10 +151,10 @@
 
                 <!-- Action Buttons -->
                 <div class="reservation-actions">
-                    <button id="submitReservation" class="btn btn-primary btn-large" data-i18n="reservation.submit">
+                    <button id="submitReservation" class="btn btn-primary btn-large">
                         Réserver
                     </button>
-                    <button id="cancelReservation" class="btn btn-secondary btn-large" data-i18n="reservation.cancel">
+                    <button id="cancelReservation" class="btn btn-secondary btn-large">
                         Annuler
                     </button>
                 </div>
@@ -177,16 +170,11 @@
     <!-- Loading Overlay -->
     <div id="loadingOverlay" class="loading-overlay" style="display: none;">
         <div class="loading-spinner"></div>
-        <p data-i18n="reservation.loading">Chargement...</p>
+        <p>Chargement...</p>
     </div>
 
-    <!-- i18next libraries -->
-    <script src="js/i18next.min.js"></script>
-    <script src="js/i18nextHttpBackend.min.js"></script>
-    
     <!-- Core classes -->
     <script src="js/core/ApiClient.js"></script>
-    <script src="js/core/I18nService.js"></script>
     <script src="js/core/Application.js"></script>
     
     <!-- Repositories -->

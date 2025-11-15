@@ -10,15 +10,6 @@
         
         // Make services globally available
         window.app = app;
-        window.changeLanguage = (lng) => app.getI18nService().changeLanguage(lng);
-        
-        // Setup language switcher buttons
-        document.querySelectorAll('.lang-btn').forEach(btn => {
-            btn.addEventListener('click', function() {
-                const lang = this.textContent.toLowerCase();
-                window.changeLanguage(lang);
-            });
-        });
         
         // Determine page type and initialize appropriate controller
         const path = window.location.pathname;
@@ -34,8 +25,6 @@
             controller = app.createStatisticsController();
         } else if (page === 'reservation.html') {
             // Reservation page will use a separate initialization
-            // i18n is already initialized by Application
-            this.i18nService.updatePageTranslations();
             return;
         }
         

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title data-i18n="inventory.title">Inventaire</title>
+    <title>Inventaire</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -13,101 +13,92 @@
                 <img src="assets/images/logo_interreg.png" alt="Logo">
             </div>
             <div class="header-center">
-                <h1 data-i18n="app.title">Système de Gestion d'Inventaire</h1>
-                <p data-i18n="app.subtitle">Bâtiment VIOTTE - Gestion Interactive</p>
+                <h1>Système de Gestion d'Inventaire</h1>
+                <p>Bâtiment VIOTTE - Gestion Interactive</p>
             </div>
             <div class="header-logo-right">
                 <img src="assets/images/logo_rgbfc.png" alt="Logo">
             </div>
-            <div class="language-switcher">
-                <button class="lang-btn">FR</button>
-                <button class="lang-btn">EN</button>
-            </div>
         </header>
 
         <nav class="app-tabs">
-            <a href="inventory.html" class="tab-button active" data-i18n="nav.inventory">Inventaire</a>
-            <a href="map.html" class="tab-button" data-i18n="nav.map">Carte Interactive</a>
-            <a href="statistics.html" class="tab-button" data-i18n="nav.statistics">Statistiques</a>
-            <a href="reservation.html" class="tab-button" data-i18n="nav.reservation">Réservations</a>
+            <a href="inventory.html" class="tab-button active">Inventaire</a>
+            <a href="map.html" class="tab-button">Carte Interactive</a>
+            <a href="statistics.html" class="tab-button">Statistiques</a>
+            <a href="reservation.html" class="tab-button">Réservations</a>
         </nav>
 
         <main class="app-content">
             <div class="content-wrapper">
                 <!-- Left Sidebar Filter Panel -->
                 <aside class="filter-sidebar">
-                    <h2 data-i18n="filters.search">Filtres</h2>
+                    <h2>Filtres</h2>
                     
                     <div class="filter-group">
-                        <label for="search-input" data-i18n="filters.search">Rechercher</label>
-                        <input type="text" id="search-input" data-i18n-placeholder="filters.searchPlaceholder">
+                        <label for="search-input">Rechercher</label>
+                        <input type="text" id="search-input" placeholder="Nom, référence, code barre...">
                     </div>
 
                     <div class="filter-group">
-                        <label for="floor-filter" data-i18n="filters.floor">Étage</label>
+                        <label for="floor-filter">Étage</label>
                         <select id="floor-filter">
-                            <option value="" data-i18n="filters.allFloors">Tous les étages</option>
+                            <option value="">Tous les étages</option>
                         </select>
                     </div>
 
                     <div class="filter-group">
-                        <label for="room-filter" data-i18n="filters.room">Salle</label>
+                        <label for="room-filter">Salle</label>
                         <select id="room-filter">
-                            <option value="" data-i18n="filters.allRooms">Toutes les salles</option>
+                            <option value="">Toutes les salles</option>
                         </select>
                     </div>
 
                     <div class="filter-group">
-                        <label for="type-filter" data-i18n="filters.type">Type</label>
+                        <label for="type-filter">Type</label>
                         <select id="type-filter">
-                            <option value="" data-i18n="filters.allTypes">Tous les types</option>
+                            <option value="">Tous les types</option>
                         </select>
                     </div>
 
                     <div class="filter-group">
-                        <label for="family-filter" data-i18n="filters.family">Famille</label>
+                        <label for="family-filter">Famille</label>
                         <select id="family-filter">
-                            <option value="" data-i18n="filters.allFamilies">Toutes les familles</option>
+                            <option value="">Toutes les familles</option>
                         </select>
                     </div>
 
                     <div class="filter-group">
-                        <label for="supplier-filter" data-i18n="filters.supplier">Fournisseur</label>
+                        <label for="supplier-filter">Fournisseur</label>
                         <select id="supplier-filter">
-                            <option value="" data-i18n="filters.allSuppliers">Tous les fournisseurs</option>
+                            <option value="">Tous les fournisseurs</option>
                         </select>
                     </div>
 
                     <div class="filter-group">
-                        <label for="user-filter" data-i18n="filters.user">Utilisateur</label>
+                        <label for="user-filter">Utilisateur</label>
                         <select id="user-filter">
-                            <option value="" data-i18n="filters.allUsers">Tous les utilisateurs</option>
+                            <option value="">Tous les utilisateurs</option>
                         </select>
                     </div>
 
                     <div class="filter-actions">
-                        <button class="btn btn-secondary" id="reset-filters" data-i18n="filters.reset">Réinitialiser</button>
-                        <button class="btn btn-primary" id="apply-filters" data-i18n="filters.apply">Appliquer</button>
+                        <button class="btn btn-secondary" id="reset-filters">Réinitialiser</button>
+                        <button class="btn btn-primary" id="apply-filters">Appliquer</button>
                     </div>
                 </aside>
 
                 <!-- Main Content Area -->
                 <div class="main-content">
                     <div id="items-container">
-                        <div class="loading" data-i18n="inventory.loading">Chargement des données...</div>
+                        <div class="loading">Chargement des données...</div>
                     </div>
                 </div>
             </div>
         </main>
     </div>
 
-    <!-- i18next libraries -->
-    <script src="js/i18next.min.js"></script>
-    <script src="js/i18nextHttpBackend.min.js"></script>
-    
     <!-- Core classes -->
     <script src="js/core/ApiClient.js"></script>
-    <script src="js/core/I18nService.js"></script>
     <script src="js/core/Application.js"></script>
     
     <!-- Repositories -->
