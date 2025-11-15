@@ -84,16 +84,12 @@ HackToHorizon-Client/
 │   │   ├── statistics.js       # Logique de la page statistiques
 │   │   └── reservation.js      # Logique de la page réservation
 │   │
-│   ├── assets/                 # Ressources graphiques
-│   │   └── images/
-│   │       └── floors/         # Images des plans d'étage
-│   │           ├── rdc.png
-│   │           ├── 1.png
-│   │           ├── 2.png
-│   │           └── 3.png
-│   │
-│   └── data/                   # Données statiques (si nécessaire)
-│       └── inventory.json
+│   └── images/             # Images
+│       └── floors/         # Images des plans d'étage
+│           ├── rdc.png
+│           ├── 1.png
+│           ├── 2.png
+│           └── 3.png
 │
 └── README.md                   # Ce fichier
 ```
@@ -239,7 +235,7 @@ L'application suit la charte graphique du bâtiment VIOTTE avec :
 ### Intégration des Logos
 
 Pour intégrer vos logos :
-1. Placer les fichiers SVG dans `/public/assets/logos/`
+1. Placer les fichiers SVG dans `/public/images/`
 2. Utiliser les noms : `logo-viotte--white.svg` et `logo-partner--white.svg`
 3. Modifier les divs `.header-logo-left` et `.header-logo-right` dans les fichiers HTML
 

@@ -120,7 +120,7 @@ Added design system section with:
 ## 4. Assets Structure
 
 ### Created Directories:
-- `public/assets/logos/` - Ready for logo files
+- `public/images/` - Ready for logo files
 - `public/js/vendor/` - For local library copies (i18next mock for testing)
 
 ## Testing Results

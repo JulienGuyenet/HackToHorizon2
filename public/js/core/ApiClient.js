@@ -6,8 +6,8 @@
 class ApiClient {
     constructor(config = {}) {
         this.config = {
-            baseURL: config.baseURL || 'http://localhost:5281/api',
-            httpsBaseURL: config.httpsBaseURL || 'https://localhost:7201/api',
+            baseURL: config.baseURL || 'http://localhost:8080/api',
+            httpsBaseURL: config.httpsBaseURL || 'https://localhost:8080/api',
             timeout: config.timeout || 10000,
             useHttps: config.useHttps || false
         };

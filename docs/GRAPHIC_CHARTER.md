@@ -304,7 +304,7 @@ When implementing hero sections for specific pages:
 .hero-section {
   position: relative;
   height: 400px;
-  background-image: url('/assets/images/hero-bg.jpg');
+  background-image: url('/images/hero-bg.jpg');
   background-size: cover;
   background-position: center;
 }

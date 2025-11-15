@@ -221,7 +221,7 @@ class MapController {
         const mapContainer = document.getElementById('map-container');
         
         const imageName = this.floorImageMap[floor] || 'rdc.png';
-        const imagePath = `/assets/images/floors/${imageName}`;
+        const imagePath = `/images/floors/${imageName}`;
         
         // Get filtered items
         let items = this.inventoryService.getItemsByFloor(floor);
