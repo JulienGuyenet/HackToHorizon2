@@ -734,6 +734,66 @@ body {
     z-index: 100;
     min-width: 250px;
     max-width: 300px;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+/* Collapsed state for filter panel */
+.map-filter-panel.collapsed {
+    transform: translateX(calc(100% + 1rem));
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* Hamburger toggle button */
+.map-filter-toggle {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: rgba(74, 63, 58, 0.9);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    color: var(--color-white);
+    border: none;
+    padding: 0.75rem;
+    border-radius: 8px;
+    cursor: pointer;
+    z-index: 101;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    width: 40px;
+    height: 40px;
+    justify-content: center;
+    align-items: center;
+}
+
+.map-filter-toggle:hover {
+    background: rgba(74, 63, 58, 1);
+    transform: scale(1.05);
+}
+
+.map-filter-toggle span {
+    display: block;
+    width: 24px;
+    height: 3px;
+    background: var(--color-white);
+    border-radius: 2px;
+    transition: all 0.3s ease;
+}
+
+/* Animated hamburger states */
+.map-filter-toggle.active span:nth-child(1) {
+    transform: translateY(7px) rotate(45deg);
+}
+
+.map-filter-toggle.active span:nth-child(2) {
+    opacity: 0;
+}
+
+.map-filter-toggle.active span:nth-child(3) {
+    transform: translateY(-7px) rotate(-45deg);
 }
 
 .map-filter-panel h3 {
@@ -1646,4 +1706,64 @@ body {
     margin-bottom: 0.5rem;
     font-weight: 500;
     color: #333;
+}
+
+/* =============================================================================
+   FURNITURE PLACEMENT STYLES
+   ============================================================================= */
+
+/* Placement overlay message */
+.placement-overlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(74, 63, 58, 0.95);
+    color: var(--color-white);
+    padding: 1.5rem 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+    z-index: 150;
+    text-align: center;
+    min-width: 300px;
+}
+
+.placement-message p {
+    margin: 0.5rem 0;
+}
+
+.placement-message p:first-child {
+    font-size: 1.1rem;
+    margin-bottom: 0.75rem;
+}
+
+.placement-message em {
+    color: var(--color-teal);
+    font-style: italic;
+}
+
+.placement-message button {
+    margin-top: 1rem;
+}
+
+/* Success message toast */
+.success-message {
+    position: fixed;
+    top: 100px;
+    left: 50%;
+    transform: translateX(-50%) translateY(-100px);
+    background: #4CAF50;
+    color: white;
+    padding: 1rem 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+    font-weight: 500;
+    opacity: 0;
+    transition: all 0.3s ease;
+}
+
+.success-message.show {
+    transform: translateX(-50%) translateY(0);
+    opacity: 1;
 }

@@ -27,9 +27,11 @@ class MapController {
      * Initialize the page
      */
     async init() {
+        // Always setup event listeners first, even if data loading fails
+        this.setupEventListeners();
+        
         try {
             await this.loadData();
-            this.setupEventListeners();
             this.populateFilters();
             // Auto-load RDC (ground floor) by default
             this.autoLoadRDC();
@@ -72,6 +74,17 @@ class MapController {
      * Setup event listeners
      */
     setupEventListeners() {
+        // Hamburger menu toggle
+        const filterToggleBtn = document.getElementById('filter-toggle-btn');
+        const filterPanel = document.getElementById('map-filter-panel');
+        
+        if (filterToggleBtn && filterPanel) {
+            filterToggleBtn.addEventListener('click', () => {
+                filterToggleBtn.classList.toggle('active');
+                filterPanel.classList.toggle('collapsed');
+            });
+        }
+
         // Floor filter change - instant map update
         document.getElementById('map-floor-filter').addEventListener('change', (e) => {
             this.currentFilters.floor = e.target.value;
@@ -310,7 +323,7 @@ class MapController {
                     </div>
                     
                     <div class="modal-actions">
-                        <button class="btn btn-secondary" onclick="mapController.closeAddFurnitureDialog()">Annuler</button>
+                        <button class="btn btn-secondary" id="cancel-furniture-select">Annuler</button>
                         <button class="btn btn-primary" id="confirm-furniture-select">Sélectionner</button>
                     </div>
                 </div>
@@ -324,6 +337,11 @@ class MapController {
         
         // Populate furniture list
         this.populateFurnitureList();
+        
+        // Setup cancel button
+        document.getElementById('cancel-furniture-select').addEventListener('click', () => {
+            this.closeAddFurnitureDialog();
+        });
         
         // Setup confirm button
         document.getElementById('confirm-furniture-select').addEventListener('click', () => {
@@ -361,18 +379,147 @@ class MapController {
             return;
         }
         
+        // Find the selected item
+        const allItems = this.inventoryService.getAllItems();
+        const selectedItem = allItems.find(item => 
+            (item.id && item.id.toString() === selectedId) || 
+            (item.barcode && item.barcode.toString() === selectedId)
+        );
+        
+        if (!selectedItem) {
+            alert('Meuble non trouvé');
+            return;
+        }
+        
         this.closeAddFurnitureDialog();
         
-        // Enable click-to-place mode
-        alert('Mode placement activé. Cliquez sur la carte pour placer le meuble.\n\n(Cette fonctionnalité sera complètement implémentée avec la sauvegarde dans l\'API)');
+        // Enable placement mode
+        this.startPlacementMode(selectedItem);
+    }
+
+    /**
+     * Start furniture placement mode
+     */
+    startPlacementMode(item) {
+        // Store the item to place
+        this.itemToPlace = item;
         
-        // TODO: Implement actual placement logic with map click handler
-        // This would require:
-        // 1. Add click handler to map
-        // 2. Convert click coordinates to relative positions
-        // 3. Update item coordinates
-        // 4. Save to API
-        // 5. Refresh map
+        // Add visual feedback
+        const mapContainer = document.getElementById('map-container');
+        mapContainer.style.cursor = 'crosshair';
+        
+        // Add overlay message
+        const overlayMessage = document.createElement('div');
+        overlayMessage.id = 'placement-overlay';
+        overlayMessage.className = 'placement-overlay';
+        overlayMessage.innerHTML = `
+            <div class="placement-message">
+                <p><strong>Mode placement actif</strong></p>
+                <p>Cliquez sur la carte pour placer: <em>${this.escapeHtml(item.designation)}</em></p>
+                <button class="btn btn-secondary btn-sm" id="cancel-placement">Annuler</button>
+            </div>
+        `;
+        mapContainer.appendChild(overlayMessage);
+        
+        // Add click handler to map for placement
+        this.placementClickHandler = (e) => this.handleMapClick(e);
+        mapContainer.addEventListener('click', this.placementClickHandler);
+        
+        // Add cancel button handler
+        document.getElementById('cancel-placement').addEventListener('click', (e) => {
+            e.stopPropagation();
+            this.cancelPlacementMode();
+        });
+    }
+
+    /**
+     * Handle map click for furniture placement
+     */
+    handleMapClick(event) {
+        const mapContainer = document.getElementById('map-container');
+        const interactiveMapContainer = document.getElementById('interactive-map-container');
+        const image = document.getElementById('floor-plan-image');
+        
+        if (!image || !interactiveMapContainer) {
+            console.error('Map elements not found');
+            return;
+        }
+        
+        // Get the click position relative to the image
+        const rect = image.getBoundingClientRect();
+        const clickX = event.clientX - rect.left;
+        const clickY = event.clientY - rect.top;
+        
+        // Convert to relative coordinates (0-1)
+        const relativeX = clickX / rect.width;
+        const relativeY = clickY / rect.height;
+        
+        // Validate coordinates are within bounds
+        if (relativeX < 0 || relativeX > 1 || relativeY < 0 || relativeY > 1) {
+            console.log('Click outside map bounds');
+            return;
+        }
+        
+        // Update item coordinates
+        this.itemToPlace.coordinates = {
+            x: relativeX,
+            y: relativeY
+        };
+        
+        console.log(`Placed ${this.itemToPlace.designation} at (${relativeX.toFixed(3)}, ${relativeY.toFixed(3)})`);
+        
+        // Cancel placement mode
+        this.cancelPlacementMode();
+        
+        // Refresh the map to show the new placement
+        this.applyFiltersInstantly();
+        
+        // Show success message
+        this.showSuccessMessage(`Meuble "${this.itemToPlace.designation}" placé avec succès!`);
+    }
+
+    /**
+     * Cancel placement mode
+     */
+    cancelPlacementMode() {
+        const mapContainer = document.getElementById('map-container');
+        mapContainer.style.cursor = 'default';
+        
+        // Remove overlay message
+        const overlayMessage = document.getElementById('placement-overlay');
+        if (overlayMessage) {
+            overlayMessage.remove();
+        }
+        
+        // Remove click handler
+        if (this.placementClickHandler) {
+            mapContainer.removeEventListener('click', this.placementClickHandler);
+            this.placementClickHandler = null;
+        }
+        
+        // Clear item to place
+        this.itemToPlace = null;
+    }
+
+    /**
+     * Show success message
+     */
+    showSuccessMessage(message) {
+        const successDiv = document.createElement('div');
+        successDiv.className = 'success-message';
+        successDiv.textContent = message;
+        document.body.appendChild(successDiv);
+        
+        setTimeout(() => {
+            successDiv.classList.add('show');
+        }, 10);
+        
+        setTimeout(() => {
+            successDiv.classList.remove('show');
+            setTimeout(() => {
+                successDiv.remove();
+            }, 300);
+        }, 3000);
     }
 
     /**
