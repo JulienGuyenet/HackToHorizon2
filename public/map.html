@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="map.title">Carte Interactive</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="app-container">
+        <header class="app-header">
+            <h1 data-i18n="app.title">Système de Gestion d'Inventaire</h1>
+            <p data-i18n="app.subtitle">Bâtiment VIOTTE - Gestion Interactive</p>
+        </header>
+
+        <nav class="app-tabs">
+            <a href="inventory.html" class="tab-button" data-i18n="nav.inventory">Inventaire</a>
+            <a href="map.html" class="tab-button active" data-i18n="nav.map">Carte Interactive</a>
+            <a href="statistics.html" class="tab-button" data-i18n="nav.statistics">Statistiques</a>
+            <a href="reservation.html" class="tab-button" data-i18n="nav.reservation">Réservations</a>
+        </nav>
+
+        <main class="app-content">
+            <div class="map-controls">
+                <div class="control-group">
+                    <label for="map-floor-filter" data-i18n="map.selectFloor">Sélectionner l'étage</label>
+                    <select id="map-floor-filter">
+                        <option value="" data-i18n="map.selectFloor">Sélectionner un étage</option>
+                    </select>
+                </div>
+                <button class="btn btn-primary" id="load-map" data-i18n="map.loadMap">Charger la carte</button>
+            </div>
+        </main>
+    </div>
+
+    <!-- Map Container Overlay -->
+    <div class="map-container-wrapper">
+        <div id="map-container"></div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/i18next@21.10.0/i18next.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/i18next-http-backend@2.1.0/i18nextHttpBackend.min.js"></script>
+    <script src="js/i18n.js"></script>
+    <script src="js/dataLoader.js"></script>
+    <script src="js/map.js"></script>
+</body>
+</html>

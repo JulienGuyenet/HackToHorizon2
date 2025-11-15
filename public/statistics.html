@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="statistics.title">Statistiques</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="app-container">
+        <header class="app-header">
+            <h1 data-i18n="app.title">Système de Gestion d'Inventaire</h1>
+            <p data-i18n="app.subtitle">Bâtiment VIOTTE - Gestion Interactive</p>
+        </header>
+
+        <nav class="app-tabs">
+            <a href="inventory.html" class="tab-button" data-i18n="nav.inventory">Inventaire</a>
+            <a href="map.html" class="tab-button" data-i18n="nav.map">Carte Interactive</a>
+            <a href="statistics.html" class="tab-button active" data-i18n="nav.statistics">Statistiques</a>
+            <a href="reservation.html" class="tab-button" data-i18n="nav.reservation">Réservations</a>
+        </nav>
+
+        <main class="app-content">
+            <h2 style="margin-bottom: 20px;" data-i18n="statistics.title">Statistiques Globales</h2>
+            
+            <div class="stats-container" id="global-stats">
+                <div class="stat-card">
+                    <div class="stat-label" data-i18n="statistics.totalItems">Total Items</div>
+                    <div class="stat-value" id="total-items">-</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label" data-i18n="statistics.totalFloors">Étages</div>
+                    <div class="stat-value" id="total-floors">-</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label" data-i18n="statistics.totalRooms">Salles</div>
+                    <div class="stat-value" id="total-rooms">-</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label" data-i18n="statistics.totalFamilies">Familles</div>
+                    <div class="stat-value" id="total-families">-</div>
+                </div>
+            </div>
+
+            <div id="detailed-stats" style="margin-top: 30px;"></div>
+        </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/i18next@21.10.0/i18next.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/i18next-http-backend@2.1.0/i18nextHttpBackend.min.js"></script>
+    <script src="js/i18n.js"></script>
+    <script src="js/dataLoader.js"></script>
+    <script src="js/statistics.js"></script>
+</body>
+</html>
