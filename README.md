@@ -82,21 +82,45 @@ HackToHorizon2/
 - Messages de succès/erreur
 - Support multilingue complet
 
-## Internationalisation
+## Internationalisation (i18n)
 
-Le système utilise i18next pour la gestion des traductions.
+Le système utilise i18next avec une configuration avancée pour la gestion des traductions.
 
+### Langues Supportées
 - Français (par défaut)
 - Anglais
+
+### Fonctionnalités i18n
+- **Détection Intelligente de Langue** : localStorage → langue du navigateur → défaut (FR)
+- **Lazy-loading** : Chargement à la demande des traductions avec cache navigateur
+- **Header Accept-Language** : Envoyé automatiquement dans toutes les requêtes API
+- **Persistance** : La préférence de langue est sauvegardée dans localStorage
+- **Changement à Chaud** : Boutons FR/EN dans la navigation pour changer de langue instantanément
+- **Attribut HTML lang** : Mis à jour automatiquement lors du changement de langue
+
+### Gestion des Erreurs Localisées
+- Codes d'erreur standardisés de l'API mappés vers des messages traduits
+- Support des erreurs réseau, d'authentification, de ressources et de validation
+- Classe `APIError` pour une gestion cohérente des erreurs
 
 Fichiers de traduction : `public/locales/{lang}/translation.json`
 
 ## Données
 
-Les données d'inventaire sont stockées dans `public/data/inventory.json`.
-Les fichiers source sont dans le dossier `data/` :
+Les données d'inventaire sont chargées dynamiquement depuis l'API .NET backend.
+
+### Intégration API
+- **Chargement Dynamique** : Les données sont récupérées via `apiService.js` qui communique avec l'API .NET
+- **Transformation des Données** : Le module `dataLoader.js` transforme les réponses API en format attendu par l'UI
+- **Gestion d'Erreurs** : Erreurs API avec messages localisés et codes d'erreur standardisés
+- **Header Accept-Language** : Envoyé dans chaque requête pour respecter la préférence utilisateur
+
+### Fichiers Source (Legacy)
+Les fichiers source sont dans le dossier `data/` (pour référence uniquement) :
 - `VIOTTE_Inventaire_20251114.csv`
 - `VIOTTE_Inventaire_20251114.xlsx`
+
+**Note** : Le système charge maintenant les données directement depuis l'API backend au lieu de fichiers JSON statiques.
 
 ## Architecture
 
@@ -125,10 +149,22 @@ Chaque fonctionnalité a sa propre page HTML pour une meilleure organisation :
 
 ### API Integration
 Le système intègre une API .NET complète pour la gestion des meubles :
-- Module `apiService.js` : Wrapper complet pour tous les endpoints
-- Support des opérations CRUD pour Furniture, Location, et RFID
-- Gestion d'erreurs et connectivité
-- Configuration HTTPS/HTTP flexible
+- **Module `apiService.js`** : Wrapper complet pour tous les endpoints
+  - Support des opérations CRUD pour Furniture, Location, et RFID
+  - Gestion d'erreurs avec classe `APIError` et messages localisés
+  - Configuration HTTPS/HTTP flexible
+  - Header Accept-Language automatique pour respecter la langue utilisateur
+- **Module `dataLoader.js`** : Couche d'abstraction pour le chargement de données
+  - Chargement dynamique depuis l'API via `getAllFurniture()` et `getAllLocations()`
+  - Transformation des données API vers le format attendu par l'UI
+  - Gestion d'erreurs avec messages traduits
+  - Interface compatible avec le code existant
+
+### Gestion des Erreurs
+- **Codes d'Erreur Standardisés** : L'API retourne des `error_code` (ex: `FURNITURE_NOT_FOUND`, `EMAIL_TAKEN`)
+- **Mapping Local** : Les codes d'erreur sont mappés côté client vers des messages traduits
+- **Erreurs Localisées** : Tous les messages d'erreur respectent la langue choisie par l'utilisateur
+- **Types d'Erreurs** : Réseau, authentification, ressources, validation, logique métier
 
 ### Assets
 Les assets sont dans `public/assets/` :
