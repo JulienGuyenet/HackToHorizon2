@@ -160,6 +160,57 @@ const API_CONFIG = {
 - Classe `APIError` pour une gestion cohérente
 - Affichage user-friendly des erreurs
 
+## 🏗️ Architecture
+
+L'application utilise une **architecture orientée objet (OOP)** moderne avec une séparation claire des responsabilités:
+
+### Structure en Couches
+
+```
+View (HTML/CSS)
+    ↓
+Controllers (Présentation)
+    ↓
+Services (Logique Métier)
+    ↓
+Repositories (Accès aux Données)
+    ↓
+Core (Infrastructure)
+```
+
+### Organisation du Code
+
+```
+public/js/
+├── core/              # Couche fondamentale
+│   ├── ApiClient.js       # Client HTTP
+│   ├── I18nService.js     # Internationalisation
+│   └── Application.js     # Bootstrap
+├── repositories/      # Accès aux données API
+│   ├── FurnitureRepository.js
+│   └── LocationRepository.js
+├── services/          # Logique métier
+│   └── InventoryService.js
+├── controllers/       # Gestion des pages
+│   ├── InventoryController.js
+│   ├── MapController.js
+│   └── StatisticsController.js
+├── utils/             # Utilitaires
+│   └── Utils.js
+└── [legacy files]     # Ancien code (compatibilité)
+```
+
+**Pour plus de détails:** Consultez [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)
+
+### Patterns Utilisés
+
+- **MVC (Model-View-Controller)**
+- **Repository Pattern** pour l'accès aux données
+- **Service Layer** pour la logique métier
+- **Dependency Injection** via constructeurs
+- **Factory Pattern** pour la création d'objets
+- **Singleton** pour les services globaux
+
 ## 🎨 Technologies Utilisées
 
 - **HTML5** - Structure des pages
