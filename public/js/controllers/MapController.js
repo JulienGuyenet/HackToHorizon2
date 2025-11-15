@@ -31,17 +31,12 @@ class MapController {
             await this.loadData();
             this.setupEventListeners();
             this.populateFilters();
-            // Auto-load first floor if available
-            this.autoLoadFirstFloor();
+            // Auto-load RDC (ground floor) by default
+            this.autoLoadRDC();
         } catch (error) {
             console.error('Error initializing map page:', error);
-            // Don't show alert on API error, just log it
-            const mapContainer = document.getElementById('map-container');
-            mapContainer.innerHTML = `
-                <div class="map-placeholder">
-                    <p>Impossible de charger les données. Veuillez vérifier la connexion à l'API.</p>
-                </div>
-            `;
+            // Still load RDC even if API fails
+            this.autoLoadRDC();
         }
     }
 
@@ -77,25 +72,27 @@ class MapController {
      * Setup event listeners
      */
     setupEventListeners() {
-        // Floor filter change
+        // Floor filter change - instant map update
         document.getElementById('map-floor-filter').addEventListener('change', (e) => {
             this.currentFilters.floor = e.target.value;
-            this.applyFilters();
+            this.applyFiltersInstantly();
         });
 
-        // Room filter change
+        // Room filter change - instant update
         document.getElementById('map-room-filter').addEventListener('change', (e) => {
             this.currentFilters.room = e.target.value;
+            this.applyFiltersInstantly();
         });
 
-        // Type filter change
+        // Type filter change - instant update
         document.getElementById('map-type-filter').addEventListener('change', (e) => {
             this.currentFilters.type = e.target.value;
+            this.applyFiltersInstantly();
         });
 
-        // Apply filters button
+        // Apply filters button - manual trigger
         document.getElementById('apply-map-filters').addEventListener('click', () => {
-            this.applyFilters();
+            this.applyFiltersInstantly();
         });
 
         // Reset filters button
@@ -113,14 +110,18 @@ class MapController {
      * Populate filter dropdowns
      */
     populateFilters() {
-        // Populate floor filter
+        // Populate floor filter - RDC is already in HTML, add others
         const floors = this.inventoryService.getUniqueValues('location.floor');
         const floorSelect = document.getElementById('map-floor-filter');
+        
+        // Add floors from API (skip RDC if it's already there)
         floors.forEach(floor => {
-            const option = document.createElement('option');
-            option.value = floor;
-            option.textContent = floor;
-            floorSelect.appendChild(option);
+            if (floor.toLowerCase() !== 'rdc') {
+                const option = document.createElement('option');
+                option.value = floor;
+                option.textContent = floor;
+                floorSelect.appendChild(option);
+            }
         });
 
         // Populate room filter
@@ -145,56 +146,72 @@ class MapController {
     }
 
     /**
-     * Auto-load the first available floor
+     * Auto-load RDC (ground floor) by default
      */
-    autoLoadFirstFloor() {
+    autoLoadRDC() {
         const floorSelect = document.getElementById('map-floor-filter');
-        if (floorSelect.options.length > 1) {
-            floorSelect.selectedIndex = 1;
-            this.currentFilters.floor = floorSelect.value;
-            this.applyFilters();
+        
+        // Try to find RDC in the options
+        let rdcIndex = -1;
+        for (let i = 0; i < floorSelect.options.length; i++) {
+            if (floorSelect.options[i].value.toLowerCase() === 'rdc') {
+                rdcIndex = i;
+                break;
+            }
         }
+        
+        // If RDC exists in options, select it
+        if (rdcIndex > 0) {
+            floorSelect.selectedIndex = rdcIndex;
+            this.currentFilters.floor = floorSelect.value;
+        } else {
+            // Otherwise, default to 'rdc' even if not in API data
+            this.currentFilters.floor = 'rdc';
+        }
+        
+        // Load the map
+        this.applyFiltersInstantly();
     }
 
     /**
-     * Apply filters and reload map
+     * Apply filters instantly (on change, not on button click)
      */
-    applyFilters() {
-        const floor = this.currentFilters.floor;
-        if (!floor) {
-            const mapContainer = document.getElementById('map-container');
-            mapContainer.innerHTML = `
-                <div class="map-placeholder">
-                    <p>Sélectionnez un étage pour afficher la carte</p>
-                </div>
-            `;
-            return;
-        }
-
+    applyFiltersInstantly() {
+        const floor = this.currentFilters.floor || 'rdc'; // Default to RDC
         this.currentFloor = floor;
         this.loadMap(floor);
     }
 
     /**
-     * Reset all filters
+     * Reset all filters to RDC
      */
     resetFilters() {
-        document.getElementById('map-floor-filter').selectedIndex = 0;
         document.getElementById('map-room-filter').selectedIndex = 0;
         document.getElementById('map-type-filter').selectedIndex = 0;
         
-        this.currentFilters = {
-            floor: '',
-            room: '',
-            type: ''
-        };
+        // Reset floor to RDC
+        const floorSelect = document.getElementById('map-floor-filter');
+        let rdcIndex = -1;
+        for (let i = 0; i < floorSelect.options.length; i++) {
+            if (floorSelect.options[i].value.toLowerCase() === 'rdc') {
+                rdcIndex = i;
+                break;
+            }
+        }
+        
+        if (rdcIndex > 0) {
+            floorSelect.selectedIndex = rdcIndex;
+            this.currentFilters.floor = floorSelect.value;
+        } else {
+            floorSelect.selectedIndex = 0;
+            this.currentFilters.floor = 'rdc';
+        }
+        
+        this.currentFilters.room = '';
+        this.currentFilters.type = '';
 
-        const mapContainer = document.getElementById('map-container');
-        mapContainer.innerHTML = `
-            <div class="map-placeholder">
-                <p>Sélectionnez un étage pour afficher la carte</p>
-            </div>
-        `;
+        // Reload RDC
+        this.applyFiltersInstantly();
     }
 
     /**
