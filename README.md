@@ -26,6 +26,11 @@ Ou directement :
 - `public/inventory.html` - Page d'inventaire avec filtres complets
 - `public/map.html` - Carte interactive des étages
 - `public/statistics.html` - Statistiques détaillées
+- `public/reservation.html` - Réservation de mobilier
+
+Pour utiliser la fonctionnalité de réservation, assurez-vous que l'API .NET est démarrée sur :
+- `http://localhost:5000` (HTTP)
+- ou `https://localhost:5001` (HTTPS)
 
 ## Structure du Projet
 
@@ -69,6 +74,16 @@ HackToHorizon2/
 - Répartition par étage, famille, type
 - Compteurs globaux
 
+### Réservation de Mobilier (reservation.html)
+- Recherche et sélection de mobilier
+- Choix de période de réservation (date/heure)
+- Formulaire d'informations utilisateur
+- Vérification de disponibilité
+- Intégration avec l'API .NET
+- Gestion des états (disponible/non disponible)
+- Messages de succès/erreur
+- Support multilingue complet
+
 ## Internationalisation
 
 Le système utilise i18next pour la gestion des traductions.
@@ -100,6 +115,14 @@ Chaque fonctionnalité a sa propre page HTML pour une meilleure organisation :
 - `inventory.html` - Inventaire
 - `map.html` - Carte
 - `statistics.html` - Statistiques
+- `reservation.html` - Réservation de mobilier
+
+### API Integration
+Le système intègre une API .NET complète pour la gestion des meubles :
+- Module `apiService.js` : Wrapper complet pour tous les endpoints
+- Support des opérations CRUD pour Furniture, Location, et RFID
+- Gestion d'erreurs et connectivité
+- Configuration HTTPS/HTTP flexible
 
 ### Assets
 Les assets sont maintenant dans `public/assets/` (pas de lien symbolique).
