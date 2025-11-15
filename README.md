@@ -78,18 +78,11 @@ HackToHorizon-Client/
 │   ├── js/                     # Modules JavaScript
 │   │   ├── apiService.js       # Service API (communication avec le backend)
 │   │   ├── dataLoader.js       # Chargement et transformation des données
-│   │   ├── i18n.js            # Gestion de l'internationalisation
 │   │   ├── inventory.js        # Logique de la page inventaire
 │   │   ├── map.js              # Logique de la page carte
 │   │   ├── interactiveMap.js   # Gestion de la carte interactive
 │   │   ├── statistics.js       # Logique de la page statistiques
 │   │   └── reservation.js      # Logique de la page réservation
-│   │
-│   ├── locales/                # Fichiers de traduction i18n
-│   │   ├── fr/
-│   │   │   └── translation.json
-│   │   └── en/
-│   │       └── translation.json
 │   │
 │   ├── assets/                 # Ressources graphiques
 │   │   └── images/
@@ -140,24 +133,7 @@ HackToHorizon-Client/
 - **Formulaire utilisateur** complet
 - **Vérification de disponibilité** en temps réel
 - Gestion des états (disponible/réservé)
-- Messages de confirmation et d'erreur localisés
-
-## 🌍 Internationalisation (i18n)
-
-### Langues Supportées
-- 🇫🇷 **Français** (par défaut)
-- 🇬🇧 **Anglais**
-
-### Caractéristiques
-- **Détection automatique** de la langue du navigateur
-- **Sélecteur de langue** (FR/EN) dans toutes les pages
-- **Persistance** de la préférence dans localStorage
-- **Lazy-loading** des fichiers de traduction
-- **Header Accept-Language** envoyé automatiquement dans les requêtes API
-- **Messages d'erreur localisés** depuis l'API
-
-### Fichiers de traduction
-Les traductions sont dans `public/locales/{lang}/translation.json`
+- Messages de confirmation et d'erreur
 
 ## 🔌 Intégration API
 
@@ -182,7 +158,6 @@ const API_CONFIG = {
 
 ### Gestion des Erreurs
 - **Codes d'erreur standardisés** de l'API
-- **Messages localisés** selon la langue de l'utilisateur
 - Classe `APIError` pour une gestion cohérente
 - Affichage user-friendly des erreurs
 
@@ -210,7 +185,6 @@ Core (Infrastructure)
 public/js/
 ├── core/              # Couche fondamentale
 │   ├── ApiClient.js       # Client HTTP
-│   ├── I18nService.js     # Internationalisation
 │   └── Application.js     # Bootstrap
 ├── repositories/      # Accès aux données API
 │   ├── FurnitureRepository.js
@@ -242,7 +216,6 @@ public/js/
 - **HTML5** - Structure des pages
 - **CSS3** - Styles et animations (VIOTTE Graphic Charter)
 - **JavaScript ES6+** - Logique applicative (Vanilla JS, pas de framework)
-- **i18next** - Gestion de l'internationalisation (via CDN)
 - **SVG** - Points interactifs sur la carte & logos
 - **Fetch API** - Communication avec le backend
 - **Google Fonts** - Montserrat (titres) & Open Sans (texte)
@@ -277,20 +250,18 @@ Voir [docs/LOGO_SPECIFICATIONS.md](docs/LOGO_SPECIFICATIONS.md) pour les détail
 ### Application Client-Side Pure
 - **Aucune dépendance Node.js** pour le fonctionnement
 - Tous les modules JS sont chargés directement par le navigateur
-- Bibliothèques externes (i18next) chargées depuis CDN
 - Communication avec le backend via API REST
 
 ### Organisation Modulaire
 - **Séparation des préoccupations** : chaque page a son propre fichier JS
-- **Modules réutilisables** : apiService, dataLoader, i18n
-- **Pas de texte en dur** : tout est externalisé dans les fichiers i18n
+- **Modules réutilisables** : apiService, dataLoader
 - **Gestion d'erreurs centralisée**
 
 ### Pages Autonomes
 Chaque fonctionnalité est une page indépendante :
 - Navigation simple via menu de navigation
 - Chargement optimisé des ressources nécessaires
-- Partage des modules communs (API, i18n)
+- Partage des modules communs (API)
 
 ## 🔒 Sécurité
 
@@ -315,11 +286,6 @@ Nécessite un navigateur moderne avec support de :
 
 ## 📝 Développement
 
-### Ajouter une nouvelle langue
-1. Créer un nouveau dossier dans `public/locales/{code-langue}/`
-2. Créer un fichier `translation.json` avec toutes les clés
-3. Mettre à jour la configuration i18n si nécessaire
-
 ### Modifier la configuration API
 Éditer `public/js/apiService.js` :
 ```javascript
@@ -332,7 +298,6 @@ const API_CONFIG = {
 ### Ajouter un nouveau filtre
 1. Ajouter le champ dans `inventory.html`
 2. Mettre à jour la logique de filtrage dans `public/js/inventory.js`
-3. Ajouter les traductions dans les fichiers i18n
 
 ## 🤝 Contribution
 
