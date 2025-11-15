@@ -149,10 +149,8 @@ class I18nService {
     }
 }
 
-// Export for browser (singleton pattern)
-if (typeof window !== 'undefined') {
-    window.I18nService = null; // Will be initialized by app
-}
+// Export for browser
+// Note: window.I18nService will be set to an instance by Application.init()
 
 // Export for Node.js
 if (typeof module !== 'undefined' && module.exports) {
