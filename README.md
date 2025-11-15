@@ -5,24 +5,44 @@ Application web client pour la gestion d'inventaire de mobilier avec visualisati
 ## 🚀 Démarrage Rapide
 
 ### Prérequis
-- Un serveur HTTP pour servir les fichiers statiques
+- Docker (pour l'option recommandée) OU un serveur HTTP pour servir les fichiers statiques
 - L'API Backend .NET démarrée (voir le repository backend)
 
-### Utilisation
+### Option 1 : Avec Docker (Recommandé) 🐳
 
-**Option 1 : Avec Python 3**
+**Construire l'image Docker :**
+```bash
+docker build -t hacktohorizon-client .
+```
+
+**Lancer le conteneur :**
+```bash
+docker run -d -p 8080:80 --name hacktohorizon-client hacktohorizon-client
+```
+
+Ensuite, ouvrir http://localhost:8080 dans votre navigateur.
+
+**Arrêter le conteneur :**
+```bash
+docker stop hacktohorizon-client
+docker rm hacktohorizon-client
+```
+
+### Option 2 : Sans Docker
+
+**Avec Python 3**
 ```bash
 cd public
 python3 -m http.server 8080
 ```
 
-**Option 2 : Avec PHP**
+**Avec PHP**
 ```bash
 cd public
 php -S localhost:8080
 ```
 
-**Option 3 : Avec Node.js (http-server)**
+**Avec Node.js (http-server)**
 ```bash
 npx http-server public -p 8080
 ```
@@ -32,8 +52,8 @@ Ensuite, ouvrir http://localhost:8080 dans votre navigateur.
 ### Configuration de l'API Backend
 
 L'application se connecte à l'API .NET backend configurée par défaut sur :
-- **HTTP** : `http://localhost:5000/api`
-- **HTTPS** : `https://localhost:5001/api`
+- **HTTP** : `http://localhost:5281/api`
+- **HTTPS** : `https://localhost:7201/api`
 
 Assurez-vous que l'API backend est démarrée avant d'utiliser l'application.
 
@@ -140,8 +160,8 @@ Le fichier `public/js/apiService.js` contient la configuration de l'API :
 
 ```javascript
 const API_CONFIG = {
-    baseURL: 'http://localhost:5000/api',
-    httpsBaseURL: 'https://localhost:5001/api',
+    baseURL: 'http://localhost:5281/api',
+    httpsBaseURL: 'https://localhost:7201/api',
     timeout: 10000,
     useHttps: false
 };
