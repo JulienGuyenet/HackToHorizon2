@@ -12,6 +12,14 @@
         window.app = app;
         window.changeLanguage = (lng) => app.getI18nService().changeLanguage(lng);
         
+        // Setup language switcher buttons
+        document.querySelectorAll('.lang-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const lang = this.textContent.toLowerCase();
+                window.changeLanguage(lang);
+            });
+        });
+        
         // Determine page type and initialize appropriate controller
         const path = window.location.pathname;
         const page = path.substring(path.lastIndexOf('/') + 1);
