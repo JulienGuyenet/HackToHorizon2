@@ -50,11 +50,48 @@
         </main>
     </div>
 
+    <!-- i18next libraries -->
     <script src="https://cdn.jsdelivr.net/npm/i18next@21.10.0/i18next.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/i18next-http-backend@2.1.0/i18nextHttpBackend.min.js"></script>
-    <script src="js/i18n.js"></script>
-    <script src="js/apiService.js"></script>
-    <script src="js/dataLoader.js"></script>
-    <script src="js/statistics.js"></script>
+    
+    <!-- Core classes -->
+    <script src="js/core/ApiClient.js"></script>
+    <script src="js/core/I18nService.js"></script>
+    <script src="js/core/Application.js"></script>
+    
+    <!-- Repositories -->
+    <script src="js/repositories/FurnitureRepository.js"></script>
+    <script src="js/repositories/LocationRepository.js"></script>
+    
+    <!-- Services -->
+    <script src="js/services/InventoryService.js"></script>
+    
+    <!-- Controllers -->
+    <script src="js/controllers/StatisticsController.js"></script>
+    
+    <!-- Utilities -->
+    <script src="js/utils/Utils.js"></script>
+    
+    <script>
+        // Bootstrap application
+        let app;
+        let statisticsController;
+        
+        (async function() {
+            try {
+                // Initialize application
+                app = await new Application().init();
+                
+                // Create and initialize controller
+                statisticsController = app.createStatisticsController();
+                await statisticsController.init();
+                
+                // Make changeLanguage globally available for buttons
+                window.changeLanguage = (lng) => app.getI18nService().changeLanguage(lng);
+            } catch (error) {
+                console.error('Failed to initialize application:', error);
+            }
+        })();
+    </script>
 </body>
 </html>
