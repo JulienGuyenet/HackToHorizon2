@@ -7,7 +7,12 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build:data": "node scripts/convertExcel.js"
   },
-  "keywords": ["inventory", "management", "excel", "i18n"],
+  "keywords": [
+    "inventory",
+    "management",
+    "excel",
+    "i18n"
+  ],
   "author": "",
   "license": "ISC",
   "dependencies": {
@@ -15,5 +20,8 @@
     "i18next-browser-languagedetector": "^8.2.0",
     "i18next-http-backend": "^3.0.2",
     "xlsx": "^0.18.5"
+  },
+  "devDependencies": {
+    "http-server": "^14.1.1"
   }
 }
