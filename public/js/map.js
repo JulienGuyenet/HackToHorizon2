@@ -1,10 +1,11 @@
 /**
  * Map Page JavaScript
- * Handles interactive map display
+ * Handles interactive map display with point placement and tooltips
  */
 
 // Global state
 let allItems = [];
+let interactiveMap = null;
 
 // Floor image mapping
 const floorImageMap = {
@@ -41,6 +42,21 @@ async function loadData() {
     try {
         allItems = await loadInventoryData();
         console.log(`Loaded ${allItems.length} items`);
+        
+        // Initialize coordinates if not present
+        allItems.forEach((item, index) => {
+            if (!item.coordinates) {
+                item.coordinates = { x: null, y: null };
+            }
+            // For demo purposes, add some sample coordinates to a few items
+            // This simulates having placed points on the map
+            if (index < 5 && item.coordinates.x === null) {
+                item.coordinates = {
+                    x: 0.2 + (index * 0.15),
+                    y: 0.3 + (index * 0.1)
+                };
+            }
+        });
     } catch (error) {
         console.error('Error loading data:', error);
         throw error;
@@ -79,20 +95,39 @@ function loadMap() {
     const imageName = floorImageMap[floor] || 'rdc.png';
     const imagePath = `/assets/images/floors/${imageName}`;
     
+    // Filter items for the selected floor
+    const floorItems = allItems.filter(item => item.location.floor === floor);
+    
     mapContainer.innerHTML = `
         <div class="floor-map-overlay">
             <div class="floor-info-bar">
                 <span class="floor-name">${escapeHtml(floor)}</span>
                 <button class="close-map" onclick="closeMap()">✕</button>
             </div>
-            <div class="floor-map-content">
-                <img src="${imagePath}" alt="${escapeHtml(t('map.title'))} ${escapeHtml(floor)}" onerror="handleImageError(this)">
+            <div class="floor-map-content" id="interactive-map-wrapper">
             </div>
         </div>
     `;
     
     // Show the map overlay
     mapWrapper.classList.add('active');
+    
+    // Initialize interactive map with tooltips
+    setTimeout(() => {
+        try {
+            interactiveMap = new InteractiveMap('interactive-map-wrapper', imagePath, floorItems);
+            
+            // Handle item selection events
+            document.getElementById('interactive-map-wrapper').addEventListener('itemsSelected', (event) => {
+                const selectedItems = event.detail.items;
+                console.log('Selected items:', selectedItems);
+                // You can add more functionality here, like showing item details
+            });
+        } catch (error) {
+            console.error('Error initializing interactive map:', error);
+            handleImageError(document.querySelector('#interactive-map-wrapper img'));
+        }
+    }, 100);
 }
 
 // Close map view
@@ -100,12 +135,19 @@ function closeMap() {
     const mapContainer = document.getElementById('map-container');
     const mapWrapper = document.querySelector('.map-container-wrapper');
     
+    // Clean up interactive map
+    if (interactiveMap && interactiveMap.tooltipElement) {
+        interactiveMap.tooltipElement.remove();
+    }
+    interactiveMap = null;
+    
     mapContainer.innerHTML = '';
     mapWrapper.classList.remove('active');
 }
 
 // Handle image loading errors
 function handleImageError(img) {
+    if (!img) return;
     img.style.display = 'none';
     const errorDiv = document.createElement('div');
     errorDiv.className = 'empty-state';
@@ -115,7 +157,9 @@ function handleImageError(img) {
         <h3>${t('map.imageNotAvailable')}</h3>
         <p>${t('map.imageNotAvailableHint')}</p>
     `;
-    img.parentElement.appendChild(errorDiv);
+    if (img.parentElement) {
+        img.parentElement.appendChild(errorDiv);
+    }
 }
 
 // Utility: Escape HTML
