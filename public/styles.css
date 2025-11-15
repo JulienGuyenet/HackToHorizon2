@@ -27,7 +27,7 @@
     
     /* Spacing */
     --header-height: 72px;
-    --logo-height: 48px;
+    --logo-height: 36px;
     --logo-padding: 8px;
 }
 
@@ -249,10 +249,11 @@ body {
 /* Filter Sidebar */
 .filter-sidebar {
     flex: 0 0 280px;
-    background: #f9f9f9;
-    border: 1px solid #e0e0e0;
-    border-radius: 8px;
+    background: #fff;
+    border: none;
+    border-radius: 0;
     padding: 1.5rem;
+    padding-left: 0;
     height: fit-content;
     position: sticky;
     top: 1.5rem;
