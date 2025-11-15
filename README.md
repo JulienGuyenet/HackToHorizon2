@@ -240,11 +240,37 @@ public/js/
 ## 🎨 Technologies Utilisées
 
 - **HTML5** - Structure des pages
-- **CSS3** - Styles et animations
+- **CSS3** - Styles et animations (VIOTTE Graphic Charter)
 - **JavaScript ES6+** - Logique applicative (Vanilla JS, pas de framework)
 - **i18next** - Gestion de l'internationalisation (via CDN)
-- **SVG** - Points interactifs sur la carte
+- **SVG** - Points interactifs sur la carte & logos
 - **Fetch API** - Communication avec le backend
+- **Google Fonts** - Montserrat (titres) & Open Sans (texte)
+
+## 🎨 Design System
+
+### Charte Graphique VIOTTE
+
+L'application suit la charte graphique du bâtiment VIOTTE avec :
+
+- **Palette de couleurs** : Marron foncé (#4A3F3A), Teal (#2C9BA6), Blanc
+- **Typographies** : Montserrat (titres), Open Sans (texte)
+- **Header** : Bandeau marron foncé avec logos aux extrémités
+- **Navigation** : Style minimaliste avec indicateur teal pour l'onglet actif
+- **Responsive Design** : Breakpoints à 768px et 1024px
+
+**Documentation complète :**
+- [Charte Graphique](docs/GRAPHIC_CHARTER.md) - Guide complet d'implémentation
+- [Spécifications des Logos](docs/LOGO_SPECIFICATIONS.md) - Format et utilisation des logos
+
+### Intégration des Logos
+
+Pour intégrer vos logos :
+1. Placer les fichiers SVG dans `/public/assets/logos/`
+2. Utiliser les noms : `logo-viotte--white.svg` et `logo-partner--white.svg`
+3. Modifier les divs `.header-logo-left` et `.header-logo-right` dans les fichiers HTML
+
+Voir [docs/LOGO_SPECIFICATIONS.md](docs/LOGO_SPECIFICATIONS.md) pour les détails complets.
 
 ## 🏗️ Architecture
 
