@@ -42,7 +42,13 @@ async function checkApiStatus() {
         console.error('API connectivity issue:', error);
         statusBanner.style.display = 'block';
         statusBanner.classList.add('error');
-        statusText.textContent = i18next.t('reservation.apiError') + ': ' + i18next.t('reservation.apiErrorHint');
+        
+        // Use localized error message if available
+        const errorMessage = error instanceof APIError 
+            ? error.getLocalizedMessage()
+            : i18next.t('reservation.apiError');
+        
+        statusText.textContent = errorMessage + ' - ' + i18next.t('reservation.apiErrorHint');
     }
 }
 
@@ -129,7 +135,13 @@ async function handleSearch() {
         displaySearchResults(searchResults);
     } catch (error) {
         console.error('Search error:', error);
-        showMessage(i18next.t('reservation.apiError'), 'error');
+        
+        // Use localized error message
+        const errorMessage = error instanceof APIError 
+            ? error.getLocalizedMessage()
+            : i18next.t('reservation.apiError');
+        
+        showMessage(errorMessage, 'error');
     } finally {
         showLoading(false);
     }
@@ -225,7 +237,13 @@ async function selectFurniture(furnitureId) {
         await checkAvailability();
     } catch (error) {
         console.error('Error selecting furniture:', error);
-        showMessage(i18next.t('reservation.error'), 'error');
+        
+        // Use localized error message
+        const errorMessage = error instanceof APIError 
+            ? error.getLocalizedMessage()
+            : i18next.t('reservation.error');
+        
+        showMessage(errorMessage, 'error');
     } finally {
         showLoading(false);
     }
@@ -378,7 +396,13 @@ async function handleSubmitReservation() {
         }, 2000);
     } catch (error) {
         console.error('Reservation error:', error);
-        showMessage(i18next.t('reservation.error'), 'error');
+        
+        // Use localized error message
+        const errorMessage = error instanceof APIError 
+            ? error.getLocalizedMessage()
+            : i18next.t('reservation.error');
+        
+        showMessage(errorMessage, 'error');
     } finally {
         showLoading(false);
     }

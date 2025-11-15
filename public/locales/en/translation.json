@@ -124,6 +124,24 @@
   },
   "errors": {
     "loadingData": "Error loading data",
-    "generic": "An error occurred"
+    "generic": "An error occurred",
+    "networkError": "Network connection error",
+    "apiUnavailable": "API is not available",
+    "unauthorized": "Unauthorized - Please log in",
+    "forbidden": "Access forbidden",
+    "notFound": "Resource not found",
+    "validationError": "Data validation error",
+    "serverError": "Internal server error",
+    "EMAIL_TAKEN": "This email is already in use",
+    "USER_NOT_FOUND": "User not found",
+    "INVALID_CREDENTIALS": "Invalid credentials",
+    "FURNITURE_NOT_FOUND": "Furniture not found",
+    "FURNITURE_UNAVAILABLE": "Furniture unavailable",
+    "LOCATION_NOT_FOUND": "Location not found",
+    "RFID_TAG_NOT_FOUND": "RFID tag not found",
+    "RFID_TAG_ALREADY_ASSIGNED": "RFID tag already assigned",
+    "RESERVATION_CONFLICT": "Reservation conflict - Furniture is already reserved for this period",
+    "INVALID_DATE_RANGE": "Invalid date range",
+    "MISSING_REQUIRED_FIELD": "Required field missing"
   }
 }
