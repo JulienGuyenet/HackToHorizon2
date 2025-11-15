@@ -34,9 +34,8 @@
             controller = app.createStatisticsController();
         } else if (page === 'reservation.html') {
             // Reservation page will use a separate initialization
-            // Initialize i18n for reservation page
-            await app.getI18nService().init();
-            app.getI18nService().updatePageTranslations();
+            // i18n is already initialized by Application
+            this.i18nService.updatePageTranslations();
             return;
         }
         

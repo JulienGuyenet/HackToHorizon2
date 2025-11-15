@@ -19,8 +19,7 @@
             });
         });
         
-        // Initialize i18n
-        await window.app.getI18nService().init();
+        // i18n is already initialized by Application
         
         // Make I18nService available globally for ApiClient
         window.I18nService = window.app.getI18nService();

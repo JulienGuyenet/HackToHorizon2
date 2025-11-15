@@ -31,6 +31,9 @@ class Application {
         
         // Make i18nService globally available for API client
         window.I18nService = this.i18nService;
+        
+        // Initialize i18n (load translations)
+        await this.i18nService.init();
 
         // Initialize Repositories
         this.furnitureRepository = new FurnitureRepository(this.apiClient);

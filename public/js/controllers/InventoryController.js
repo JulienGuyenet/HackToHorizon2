@@ -15,7 +15,7 @@ class InventoryController {
      */
     async init() {
         try {
-            await this.i18nService.init();
+            // i18n is already initialized by Application
             this.i18nService.updatePageTranslations();
             
             await this.loadData();
