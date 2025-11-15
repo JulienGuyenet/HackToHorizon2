@@ -10,23 +10,29 @@ Application web client pour la gestion d'inventaire de mobilier avec visualisati
 
 ### Option 1 : Avec Docker (Recommandé) 🐳
 
-**Construire l'image Docker :**
+**Option A : Avec Docker Compose (Plus simple)**
 ```bash
+# Démarrer l'application
+docker compose up -d
+
+# Arrêter l'application
+docker compose down
+```
+
+**Option B : Avec Docker CLI**
+```bash
+# Construire l'image
 docker build -t hacktohorizon-client .
-```
 
-**Lancer le conteneur :**
-```bash
+# Lancer le conteneur
 docker run -d -p 8080:80 --name hacktohorizon-client hacktohorizon-client
-```
 
-Ensuite, ouvrir http://localhost:8080 dans votre navigateur.
-
-**Arrêter le conteneur :**
-```bash
+# Arrêter le conteneur
 docker stop hacktohorizon-client
 docker rm hacktohorizon-client
 ```
+
+Ensuite, ouvrir http://localhost:8080 dans votre navigateur.
 
 ### Option 2 : Sans Docker
 
