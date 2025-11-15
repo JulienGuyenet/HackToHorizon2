@@ -1,44 +1,74 @@
 /**
  * Data Loader Module
- * Handles loading data from Excel files using the backend readers
+ * Handles loading data from the API
  */
 
 /**
- * Load inventory data from Excel file
+ * Load inventory data from API
  * @returns {Promise<Array>} Array of inventory items
  */
 async function loadInventoryData() {
     try {
-        // In a browser environment, we need to fetch the data
-        // Since we can't use Node.js modules directly in the browser,
-        // we'll need to create a simple API or load pre-converted JSON
+        // Use the API service to fetch furniture data
+        const furnitureData = await getAllFurniture();
         
-        // For now, we'll fetch a JSON version of the data
-        const response = await fetch('/data/inventory.json');
-        if (!response.ok) {
-            throw new Error('Failed to load inventory data');
+        // Transform API data to match the expected format for the UI
+        const transformedData = furnitureData.map(item => ({
+            id: item.id,
+            reference: item.reference || 'N/A',
+            designation: item.designation || 'N/A',
+            type: item.type || 'N/A',
+            family: item.family || 'N/A',
+            user: item.user || '',
+            barcode: item.barcode || 'N/A',
+            serialNumber: item.serialNumber || '',
+            supplier: item.supplier || 'N/A',
+            deliveryDate: item.deliveryDate || '',
+            location: {
+                floor: item.location?.floor || item.floor || '',
+                room: item.location?.room || item.room || '',
+                building: item.location?.building || item.building || ''
+            },
+            coordinates: item.coordinates || { x: null, y: null },
+            // Include any additional fields from API
+            ...item
+        }));
+        
+        return transformedData;
+    } catch (error) {
+        console.error('Error loading inventory data from API:', error);
+        
+        // If it's an APIError, get the localized message
+        if (error instanceof APIError) {
+            const localizedMessage = error.getLocalizedMessage();
+            throw new Error(localizedMessage);
         }
         
-        const data = await response.json();
-        return data;
-    } catch (error) {
-        console.error('Error loading inventory data:', error);
         throw error;
     }
 }
 
 /**
- * Process Excel file using the backend reader
- * This would typically be done server-side, but for this static app,
- * we'll create a conversion script
+ * Load location data from API
+ * @returns {Promise<Array>} Array of location objects
  */
-async function processExcelFile() {
-    // This function would be used to convert the Excel file to JSON
-    // It's meant to be run server-side or as a build step
-    console.log('Excel processing should be done server-side');
+async function loadLocationData() {
+    try {
+        const locationData = await getAllLocations();
+        return locationData;
+    } catch (error) {
+        console.error('Error loading location data from API:', error);
+        
+        if (error instanceof APIError) {
+            const localizedMessage = error.getLocalizedMessage();
+            throw new Error(localizedMessage);
+        }
+        
+        throw error;
+    }
 }
 
 // Export functions
 if (typeof module !== 'undefined' && module.exports) {
-    module.exports = { loadInventoryData, processExcelFile };
+    module.exports = { loadInventoryData, loadLocationData };
 }
