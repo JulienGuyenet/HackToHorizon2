@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plan Interactif - Inventaire des Équipements</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header style="text-align: center; margin-bottom: 30px;">
+            <h1 style="color: #2c3e50;">Plan Interactif - Inventaire des Équipements</h1>
+            <p style="color: #7f8c8d;">Visualisez et explorez les équipements sur le plan d'étage</p>
+        </header>
+
+        <div class="filter-panel">
+            <h3>Filtres</h3>
+            <div class="floor-selector">
+                <label for="floor-select">Sélectionner un étage:</label>
+                <select id="floor-select">
+                    <option value="">Tous les étages</option>
+                </select>
+            </div>
+        </div>
+
+        <div id="interactive-map-container"></div>
+
+        <div id="selected-items-container" style="margin-top: 30px;">
+            <h2>Détails des équipements sélectionnés</h2>
+            <div id="selected-items-list" class="items-grid"></div>
+        </div>
+    </div>
+
+    <script src="interactiveMap.js"></script>
+    <script>
+        // Mock data with sample coordinates
+        const mockData = [
+            {
+                id: 1,
+                reference: 'FAUTDACTYOPE',
+                designation: 'Fauteuil dactylo opérateur',
+                family: 'Mobilier de bureau',
+                type: 'Fauteuil',
+                supplier: 'MB2',
+                user: 'FERDENZI, Myriam',
+                barcode: '16687',
+                serialNumber: '',
+                information: 'Fauteuil ergonomique de marque SPIRIT têtière, accoudoirs 4D, support lombaire',
+                deliveryDate: '',
+                location: {
+                    floor: '4eme etage',
+                    room: '417',
+                    fullPath: '25\\BESANCON\\Siege\\VIOTTE\\4eme etage\\417',
+                    building: 'VIOTTE',
+                    site: 'Siege',
+                    city: 'BESANCON'
+                },
+                // Sample coordinates (adjust based on actual floor plan)
+                coordinates: { x: 0.85, y: 0.3 }
+            },
+            {
+                id: 2,
+                reference: 'FAUTDACTYOPE',
+                designation: 'Fauteuil dactylo opérateur',
+                family: 'Mobilier de bureau',
+                type: 'Fauteuil',
+                supplier: 'EquipBuro',
+                user: 'LAURENT, Andre',
+                barcode: '16953',
+                serialNumber: '',
+                information: 'Fauteuil ergonomique Haut dossier vertébral réglable',
+                deliveryDate: '',
+                location: {
+                    floor: '1er etage',
+                    room: '105',
+                    fullPath: '25\\BESANCON\\Siege\\VIOTTE\\1er etage\\105',
+                    building: 'VIOTTE',
+                    site: 'Siege',
+                    city: 'BESANCON'
+                },
+                coordinates: { x: 0.15, y: 0.25 }
+            },
+            {
+                id: 3,
+                reference: 'PDROIT1600P8',
+                designation: 'Plan droit L1600 P8',
+                family: 'Mobilier de bureau',
+                type: 'Plan droit',
+                supplier: 'EquipBuro',
+                user: 'LAURENT, Andre',
+                barcode: '16954',
+                serialNumber: '',
+                information: 'Plan droit 1600x800 télescopique réglable en hauteur',
+                deliveryDate: '',
+                location: {
+                    floor: '1er etage',
+                    room: '105',
+                    fullPath: '25\\BESANCON\\Siege\\VIOTTE\\1er etage\\105',
+                    building: 'VIOTTE',
+                    site: 'Siege',
+                    city: 'BESANCON'
+                },
+                coordinates: { x: 0.15, y: 0.25 }
+            },
+            {
+                id: 4,
+                reference: 'FAUTDACTYOPE',
+                designation: 'Fauteuil dactylo opérateur',
+                family: 'Mobilier de bureau',
+                type: 'Fauteuil',
+                supplier: 'EquipBuro',
+                user: 'LAROCHE, Elise',
+                barcode: '16956',
+                serialNumber: '',
+                information: 'Fauteuil ergonomique Haut dossier résille 3D',
+                deliveryDate: '',
+                location: {
+                    floor: '3eme etage',
+                    room: '318',
+                    fullPath: '25\\BESANCON\\Siege\\VIOTTE\\3eme etage\\318',
+                    building: 'VIOTTE',
+                    site: 'Siege',
+                    city: 'BESANCON'
+                },
+                coordinates: { x: 0.55, y: 0.6 }
+            }
+        ];
+
+        // Get unique floors for the filter
+        const floors = [...new Set(mockData.map(item => item.location.floor))].filter(f => f);
+        const floorSelect = document.getElementById('floor-select');
+        floors.forEach(floor => {
+            const option = document.createElement('option');
+            option.value = floor;
+            option.textContent = floor;
+            floorSelect.appendChild(option);
+        });
+
+        // Initialize the interactive map
+        const map = new InteractiveMap(
+            'interactive-map-container',
+            'Screenshot 2025-11-15 at 12.29.07.png',
+            mockData
+        );
+
+        // Handle floor filter
+        floorSelect.addEventListener('change', (e) => {
+            map.setFloor(e.target.value || null);
+        });
+
+        // Handle item selection
+        document.getElementById('interactive-map-container').addEventListener('itemsSelected', (e) => {
+            const items = e.detail.items;
+            displaySelectedItems(items);
+        });
+
+        // Display selected items
+        function displaySelectedItems(items) {
+            const container = document.getElementById('selected-items-list');
+            
+            const html = items.map(item => `
+                <div class="item-card">
+                    <div class="item-header">
+                        <h3 class="item-designation">${escapeHtml(item.designation)}</h3>
+                        <span class="item-barcode">#${item.barcode || 'N/A'}</span>
+                    </div>
+                    <div class="item-body">
+                        <div class="item-detail">
+                            <span class="label">Référence:</span>
+                            <span class="value">${escapeHtml(item.reference)}</span>
+                        </div>
+                        <div class="item-detail">
+                            <span class="label">Type:</span>
+                            <span class="value">${escapeHtml(item.type)}</span>
+                        </div>
+                        <div class="item-detail">
+                            <span class="label">Famille:</span>
+                            <span class="value">${escapeHtml(item.family)}</span>
+                        </div>
+                        <div class="item-detail">
+                            <span class="label">Utilisateur:</span>
+                            <span class="value">${escapeHtml(item.user)}</span>
+                        </div>
+                        <div class="item-detail">
+                            <span class="label">Localisation:</span>
+                            <span class="value">${escapeHtml(item.location.floor || 'N/A')} - Salle ${escapeHtml(item.location.room || 'N/A')}</span>
+                        </div>
+                        ${item.information ? `
+                        <div class="item-detail item-info">
+                            <span class="label">Informations:</span>
+                            <span class="value">${escapeHtml(item.information)}</span>
+                        </div>
+                        ` : ''}
+                    </div>
+                </div>
+            `).join('');
+            
+            container.innerHTML = html;
+        }
+
+        function escapeHtml(text) {
+            if (text === null || text === undefined) return '';
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // Note: In production, load data from the server using coordinates configuration
+        /*
+        Promise.all([
+            fetch('/api/inventory-data').then(r => r.json()),
+            fetch('/api/coordinates-config').then(r => r.json())
+        ]).then(([items, config]) => {
+            // Apply coordinates to items
+            config.coordinates.forEach(coord => {
+                const item = items.find(i => i.id === coord.id);
+                if (item) {
+                    item.coordinates = coord.coordinates;
+                }
+            });
+            
+            // Initialize map with real data
+            const map = new InteractiveMap(
+                'interactive-map-container',
+                'Screenshot 2025-11-15 at 12.29.07.png',
+                items
+            );
+        });
+        */
+    </script>
+</body>
+</html>
