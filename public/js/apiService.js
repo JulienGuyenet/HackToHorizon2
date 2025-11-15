@@ -23,10 +23,17 @@ function getBaseURL() {
  */
 async function apiFetch(endpoint, options = {}) {
     const url = `${getBaseURL()}${endpoint}`;
+    
+    // Get Accept-Language header if i18n is available
+    const acceptLanguage = typeof getAcceptLanguageHeader !== 'undefined' 
+        ? getAcceptLanguageHeader() 
+        : 'fr-FR,fr;q=0.9,en;q=0.8';
+    
     const defaultOptions = {
         headers: {
             'Content-Type': 'application/json',
-            'Accept': 'application/json'
+            'Accept': 'application/json',
+            'Accept-Language': acceptLanguage
         },
         ...options
     };
@@ -40,15 +47,92 @@ async function apiFetch(endpoint, options = {}) {
         }
         
         if (!response.ok) {
-            const errorText = await response.text();
-            throw new Error(`API Error: ${response.status} - ${errorText}`);
+            // Try to parse error response
+            let errorData;
+            const contentType = response.headers.get('content-type');
+            
+            if (contentType && contentType.includes('application/json')) {
+                errorData = await response.json();
+            } else {
+                const errorText = await response.text();
+                errorData = { message: errorText };
+            }
+            
+            // Create standardized error object
+            const error = new APIError(
+                errorData.error_code || getErrorCodeFromStatus(response.status),
+                errorData.message || `HTTP ${response.status}`,
+                response.status,
+                errorData
+            );
+            
+            throw error;
         }
         
         return await response.json();
     } catch (error) {
+        // If it's already an APIError, rethrow it
+        if (error instanceof APIError) {
+            throw error;
+        }
+        
+        // Network error or other fetch error
         console.error(`API call failed for ${endpoint}:`, error);
-        throw error;
+        throw new APIError(
+            'networkError',
+            error.message,
+            0,
+            { originalError: error }
+        );
     }
+}
+
+/**
+ * Custom API Error class
+ */
+class APIError extends Error {
+    constructor(errorCode, message, statusCode, details = {}) {
+        super(message);
+        this.name = 'APIError';
+        this.errorCode = errorCode;
+        this.statusCode = statusCode;
+        this.details = details;
+    }
+    
+    /**
+     * Get localized error message
+     * @returns {string} Localized error message
+     */
+    getLocalizedMessage() {
+        if (typeof t !== 'undefined') {
+            const key = `errors.${this.errorCode}`;
+            const translated = t(key);
+            // If translation exists (doesn't return the key), use it
+            if (translated !== key) {
+                return translated;
+            }
+        }
+        // Fallback to original message
+        return this.message || 'An error occurred';
+    }
+}
+
+/**
+ * Map HTTP status code to error code
+ */
+function getErrorCodeFromStatus(statusCode) {
+    const statusMap = {
+        400: 'validationError',
+        401: 'unauthorized',
+        403: 'forbidden',
+        404: 'notFound',
+        500: 'serverError',
+        502: 'apiUnavailable',
+        503: 'apiUnavailable',
+        504: 'apiUnavailable'
+    };
+    
+    return statusMap[statusCode] || 'generic';
 }
 
 // ============================================================================
@@ -380,6 +464,8 @@ if (typeof module !== 'undefined' && module.exports) {
         updateReaderStatus,
         // Configuration
         setUseHttps,
-        setBaseURL
+        setBaseURL,
+        // Error handling
+        APIError
     };
 }

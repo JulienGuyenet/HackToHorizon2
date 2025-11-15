@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>i18n Test Page</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .test-container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .test-section {
+            margin: 20px 0;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .test-result {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 4px;
+        }
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        .error {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        .info {
+            background-color: #d1ecf1;
+            color: #0c5460;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>i18n Implementation Test</h1>
+        
+        <div class="language-switcher" style="margin-bottom: 20px;">
+            <button onclick="testLanguageChange('fr')" class="lang-btn">FR</button>
+            <button onclick="testLanguageChange('en')" class="lang-btn">EN</button>
+        </div>
+        
+        <div class="test-section">
+            <h2>Translation Tests</h2>
+            <div id="translationTests"></div>
+        </div>
+        
+        <div class="test-section">
+            <h2>Error Code Mapping Tests</h2>
+            <div id="errorTests"></div>
+        </div>
+        
+        <div class="test-section">
+            <h2>API Error Handling Test</h2>
+            <button onclick="testApiError()" class="btn btn-primary">Simulate API Error</button>
+            <div id="apiErrorTest"></div>
+        </div>
+        
+        <div class="test-section">
+            <h2>Language Detection Test</h2>
+            <div id="languageDetectionTest"></div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/i18next@23.7.6/i18next.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/i18next-http-backend@2.4.2/i18nextHttpBackend.min.js"></script>
+    <script src="js/i18n.js"></script>
+    <script src="js/apiService.js"></script>
+    <script>
+        // Initialize and run tests
+        async function runTests() {
+            await initI18n();
+            
+            testTranslations();
+            testErrorCodes();
+            testLanguageDetection();
+        }
+        
+        function testTranslations() {
+            const container = document.getElementById('translationTests');
+            const tests = [
+                { key: 'app.title', expected: ['Système de Gestion d\'Inventaire', 'Inventory Management System'] },
+                { key: 'nav.inventory', expected: ['Inventaire', 'Inventory'] },
+                { key: 'errors.generic', expected: ['Une erreur est survenue', 'An error occurred'] }
+            ];
+            
+            let html = '';
+            tests.forEach(test => {
+                const translated = t(test.key);
+                const isValid = test.expected.includes(translated);
+                html += `<div class="test-result ${isValid ? 'success' : 'error'}">
+                    <strong>${test.key}:</strong> ${translated}
+                    ${isValid ? '✓' : '✗ Expected: ' + test.expected.join(' or ')}
+                </div>`;
+            });
+            
+            container.innerHTML = html;
+        }
+        
+        function testErrorCodes() {
+            const container = document.getElementById('errorTests');
+            const errorCodes = [
+                'EMAIL_TAKEN',
+                'FURNITURE_NOT_FOUND',
+                'networkError',
+                'unauthorized'
+            ];
+            
+            let html = '';
+            errorCodes.forEach(code => {
+                const translated = t(`errors.${code}`);
+                const isValid = translated !== `errors.${code}`;
+                html += `<div class="test-result ${isValid ? 'success' : 'error'}">
+                    <strong>errors.${code}:</strong> ${translated}
+                    ${isValid ? '✓' : '✗ Translation missing'}
+                </div>`;
+            });
+            
+            container.innerHTML = html;
+        }
+        
+        function testLanguageDetection() {
+            const container = document.getElementById('languageDetectionTest');
+            const currentLang = getCurrentLanguage();
+            const acceptHeader = getAcceptLanguageHeader();
+            
+            container.innerHTML = `
+                <div class="test-result info">
+                    <strong>Current Language:</strong> ${currentLang}
+                </div>
+                <div class="test-result info">
+                    <strong>Accept-Language Header:</strong> ${acceptHeader}
+                </div>
+                <div class="test-result info">
+                    <strong>LocalStorage Preference:</strong> ${localStorage.getItem('userLanguagePreference') || 'None'}
+                </div>
+            `;
+        }
+        
+        async function testLanguageChange(lang) {
+            await changeLanguage(lang);
+            runTests();
+        }
+        
+        function testApiError() {
+            const container = document.getElementById('apiErrorTest');
+            
+            // Simulate different error scenarios
+            const errors = [
+                new APIError('EMAIL_TAKEN', 'Email already exists', 400, { field: 'email' }),
+                new APIError('FURNITURE_NOT_FOUND', 'Furniture not found', 404),
+                new APIError('networkError', 'Network error', 0)
+            ];
+            
+            let html = '<h3>Simulated API Errors:</h3>';
+            errors.forEach(error => {
+                const localizedMsg = error.getLocalizedMessage();
+                html += `<div class="test-result info">
+                    <strong>Error Code:</strong> ${error.errorCode}<br>
+                    <strong>Original Message:</strong> ${error.message}<br>
+                    <strong>Localized Message:</strong> ${localizedMsg}<br>
+                    <strong>Status Code:</strong> ${error.statusCode}
+                </div>`;
+            });
+            
+            container.innerHTML = html;
+        }
+        
+        // Run tests when page loads
+        window.addEventListener('DOMContentLoaded', runTests);
+    </script>
+</body>
+</html>

@@ -124,6 +124,24 @@
   },
   "errors": {
     "loadingData": "Erreur lors du chargement des données",
-    "generic": "Une erreur est survenue"
+    "generic": "Une erreur est survenue",
+    "networkError": "Erreur de connexion réseau",
+    "apiUnavailable": "L'API n'est pas disponible",
+    "unauthorized": "Non autorisé - Veuillez vous connecter",
+    "forbidden": "Accès interdit",
+    "notFound": "Ressource non trouvée",
+    "validationError": "Erreur de validation des données",
+    "serverError": "Erreur interne du serveur",
+    "EMAIL_TAKEN": "Cet email est déjà utilisé",
+    "USER_NOT_FOUND": "Utilisateur non trouvé",
+    "INVALID_CREDENTIALS": "Identifiants invalides",
+    "FURNITURE_NOT_FOUND": "Mobilier non trouvé",
+    "FURNITURE_UNAVAILABLE": "Mobilier non disponible",
+    "LOCATION_NOT_FOUND": "Localisation non trouvée",
+    "RFID_TAG_NOT_FOUND": "Tag RFID non trouvé",
+    "RFID_TAG_ALREADY_ASSIGNED": "Tag RFID déjà assigné",
+    "RESERVATION_CONFLICT": "Conflit de réservation - Le mobilier est déjà réservé pour cette période",
+    "INVALID_DATE_RANGE": "Plage de dates invalide",
+    "MISSING_REQUIRED_FIELD": "Champ obligatoire manquant"
   }
 }
