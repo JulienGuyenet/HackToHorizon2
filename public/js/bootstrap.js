@@ -24,8 +24,7 @@
         } else if (page === 'statistics.html') {
             controller = app.createStatisticsController();
         } else if (page === 'reservation.html') {
-            // Reservation page will use a separate initialization
-            return;
+            controller = app.createReservationController();
         }
         
         if (controller) {

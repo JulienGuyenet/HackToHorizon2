@@ -69,6 +69,13 @@ class Application {
     createStatisticsController() {
         return new StatisticsController(this.inventoryService);
     }
+
+    /**
+     * Create controller for reservation page
+     */
+    createReservationController() {
+        return new ReservationController(this.furnitureRepository);
+    }
 }
 
 // Export for browser
