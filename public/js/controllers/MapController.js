@@ -583,7 +583,7 @@ class MapController {
     }
 
     /**
-     * Assign furniture to location via API
+     * Assign furniture to location via API and update coordinates
      */
     async assignFurnitureLocation(item, x, y) {
         if (!this.furnitureRepository || !this.locationRepository) {
@@ -591,11 +591,20 @@ class MapController {
         }
 
         try {
-            // For now, we'll use a simplified approach:
-            // 1. Get all locations
-            // 2. Find a location matching the current floor and room
-            // 3. If found, assign it; otherwise create a new one
+            // Update furniture with new coordinates
+            const updatedFurnitureData = {
+                ...item,
+                coordinates: {
+                    x: x,
+                    y: y
+                }
+            };
             
+            // Update the furniture via API with the new coordinates
+            await this.furnitureRepository.update(item.id, updatedFurnitureData);
+            console.log(`Successfully updated furniture ${item.id} with coordinates (${x}, ${y})`);
+            
+            // Also assign/update the location if the floor has changed
             const locations = await this.locationRepository.getAll();
             
             // Try to find an existing location for this floor and room
@@ -618,10 +627,11 @@ class MapController {
                 console.log(`Using existing location with ID: ${targetLocation.id}`);
             }
             
-            // Assign the location to the furniture
-            await this.furnitureRepository.assignLocation(item.id, targetLocation.id);
-            
-            console.log(`Successfully assigned furniture ${item.id} to location ${targetLocation.id}`);
+            // Assign the location to the furniture if it's different
+            if (item.location?.floor !== this.currentFloor) {
+                await this.furnitureRepository.assignLocation(item.id, targetLocation.id);
+                console.log(`Successfully assigned furniture ${item.id} to location ${targetLocation.id}`);
+            }
         } catch (error) {
             console.error('Error in assignFurnitureLocation:', error);
             throw error;
