@@ -590,26 +590,38 @@ class MapController {
             throw new Error('Repositories not available');
         }
 
-        // First, try to find or create a location for these coordinates
-        // For now, we'll create a location based on the current floor and room
-        const locationData = {
-            floor: this.currentFloor,
-            room: item.location?.room || 'Unknown',
-            building: item.location?.building || 'VIOTTE',
-            coordinates: {
-                x: x,
-                y: y
-            }
-        };
-
         try {
-            // Create the location
-            const location = await this.locationRepository.create(locationData);
+            // For now, we'll use a simplified approach:
+            // 1. Get all locations
+            // 2. Find a location matching the current floor and room
+            // 3. If found, assign it; otherwise create a new one
+            
+            const locations = await this.locationRepository.getAll();
+            
+            // Try to find an existing location for this floor and room
+            let targetLocation = locations.find(loc => 
+                loc.floor === this.currentFloor && 
+                loc.room === (item.location?.room || 'Unknown')
+            );
+            
+            if (!targetLocation) {
+                // Create a new location
+                const locationData = {
+                    floor: this.currentFloor,
+                    room: item.location?.room || 'Unknown',
+                    building: item.location?.building || 'VIOTTE'
+                };
+                
+                targetLocation = await this.locationRepository.create(locationData);
+                console.log(`Created new location with ID: ${targetLocation.id}`);
+            } else {
+                console.log(`Using existing location with ID: ${targetLocation.id}`);
+            }
             
             // Assign the location to the furniture
-            await this.furnitureRepository.assignLocation(item.id, location.id);
+            await this.furnitureRepository.assignLocation(item.id, targetLocation.id);
             
-            console.log(`Successfully assigned furniture ${item.id} to location ${location.id}`);
+            console.log(`Successfully assigned furniture ${item.id} to location ${targetLocation.id}`);
         } catch (error) {
             console.error('Error in assignFurnitureLocation:', error);
             throw error;
