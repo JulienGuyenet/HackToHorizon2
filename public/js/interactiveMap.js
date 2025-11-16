@@ -93,7 +93,7 @@ class InteractiveMap {
         
         // Filter items based on current floor
         const visibleItems = this.currentFloor 
-            ? this.items.filter(item => item.location.floor === this.currentFloor)
+            ? this.items.filter(item => item.location?.floor === this.currentFloor)
             : this.items;
         
         // Group items by room to avoid overlapping points
@@ -115,7 +115,7 @@ class InteractiveMap {
     groupItemsByRoom(items) {
         const grouped = {};
         items.forEach(item => {
-            const room = item.location.room || 'unknown';
+            const room = item.location?.room || 'unknown';
             if (!grouped[room]) {
                 grouped[room] = [];
             }
@@ -136,7 +136,7 @@ class InteractiveMap {
         // Create group for point
         const group = document.createElementNS('http://www.w3.org/2000/svg', 'g');
         group.classList.add('map-point');
-        group.setAttribute('data-room', item.location.room || '');
+        group.setAttribute('data-room', item.location?.room || '');
         
         // Create outer circle (pulse effect)
         const outerCircle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
@@ -220,7 +220,7 @@ class InteractiveMap {
                 <div class="tooltip-body">
                     <div><strong>Type:</strong> ${this.escapeHtml(item.type)}</div>
                     <div><strong>Utilisateur:</strong> ${this.escapeHtml(item.user)}</div>
-                    <div><strong>Salle:</strong> ${this.escapeHtml(item.location.room || 'N/A')}</div>
+                    <div><strong>Salle:</strong> ${this.escapeHtml(item.location?.room || 'N/A')}</div>
                     <div><strong>Code barre:</strong> ${item.barcode || 'N/A'}</div>
                 </div>
             `;
@@ -231,7 +231,7 @@ class InteractiveMap {
             
             return `
                 <div class="tooltip-header">
-                    <strong>Salle ${this.escapeHtml(items[0].location.room || 'N/A')}</strong>
+                    <strong>Salle ${this.escapeHtml(items[0].location?.room || 'N/A')}</strong>
                 </div>
                 <div class="tooltip-body">
                     <div><strong>${items.length} items:</strong></div>

@@ -170,7 +170,7 @@ class InventoryService {
         };
 
         this.items.forEach(item => {
-            const floor = item.location.floor || 'Unknown';
+            const floor = item.location?.floor || 'Unknown';
             const family = item.family || 'Unknown';
             const type = item.type || 'Unknown';
 
