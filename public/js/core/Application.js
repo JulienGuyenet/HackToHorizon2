@@ -56,7 +56,11 @@ class Application {
      * Create controller for map page
      */
     createMapController() {
-        return new MapController(this.inventoryService);
+        const controller = new MapController(this.inventoryService);
+        // Expose repositories to controller
+        controller.furnitureRepository = this.furnitureRepository;
+        controller.locationRepository = this.locationRepository;
+        return controller;
     }
 
     /**

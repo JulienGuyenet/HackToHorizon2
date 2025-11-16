@@ -21,6 +21,10 @@ class MapController {
             '3eme etage': '3.png',
             '4eme etage': '4.png'
         };
+        
+        // Repositories will be injected by Application.js
+        this.furnitureRepository = null;
+        this.locationRepository = null;
     }
 
     /**
@@ -32,14 +36,16 @@ class MapController {
         
         try {
             await this.loadData();
-            this.populateFilters();
-            // Auto-load RDC (ground floor) by default
-            this.autoLoadRDC();
         } catch (error) {
-            console.error('Error initializing map page:', error);
-            // Still load RDC even if API fails
-            this.autoLoadRDC();
+            console.error('Error loading inventory data:', error);
+            // Continue with initialization even if API fails
         }
+        
+        // Always populate filters (even with empty data)
+        this.populateFilters();
+        
+        // Auto-load RDC (ground floor) by default
+        this.autoLoadRDC();
     }
 
     /**
@@ -435,7 +441,7 @@ class MapController {
     /**
      * Handle map click for furniture placement
      */
-    handleMapClick(event) {
+    async handleMapClick(event) {
         const mapContainer = document.getElementById('map-container');
         const interactiveMapContainer = document.getElementById('interactive-map-container');
         const image = document.getElementById('floor-plan-image');
@@ -466,16 +472,28 @@ class MapController {
             y: relativeY
         };
         
-        console.log(`Placed ${this.itemToPlace.designation} at (${relativeX.toFixed(3)}, ${relativeY.toFixed(3)})`);
-        
         // Cancel placement mode
         this.cancelPlacementMode();
         
-        // Refresh the map to show the new placement
-        this.applyFiltersInstantly();
+        // Show loading message
+        this.showInfoMessage(`Placement de "${this.itemToPlace.designation}" en cours...`);
         
-        // Show success message
-        this.showSuccessMessage(`Meuble "${this.itemToPlace.designation}" placé avec succès!`);
+        try {
+            // Call API to assign location
+            await this.assignFurnitureLocation(this.itemToPlace, relativeX, relativeY);
+            
+            // Refresh the map to show the new placement
+            await this.inventoryService.loadItems();
+            this.applyFiltersInstantly();
+            
+            // Show success message
+            this.showSuccessMessage(`Meuble "${this.itemToPlace.designation}" placé avec succès!`);
+        } catch (error) {
+            console.error('Error placing furniture:', error);
+            this.showErrorMessage(`Erreur lors du placement: ${error.message}`);
+            // Revert coordinates
+            this.itemToPlace.coordinates = { x: null, y: null };
+        }
     }
 
     /**
@@ -520,6 +538,94 @@ class MapController {
                 successDiv.remove();
             }, 300);
         }, 3000);
+    }
+
+    /**
+     * Show error message
+     */
+    showErrorMessage(message) {
+        const errorDiv = document.createElement('div');
+        errorDiv.className = 'error-message';
+        errorDiv.textContent = message;
+        document.body.appendChild(errorDiv);
+        
+        setTimeout(() => {
+            errorDiv.classList.add('show');
+        }, 10);
+        
+        setTimeout(() => {
+            errorDiv.classList.remove('show');
+            setTimeout(() => {
+                errorDiv.remove();
+            }, 300);
+        }, 3000);
+    }
+
+    /**
+     * Show info message
+     */
+    showInfoMessage(message) {
+        const infoDiv = document.createElement('div');
+        infoDiv.className = 'info-message';
+        infoDiv.textContent = message;
+        document.body.appendChild(infoDiv);
+        
+        setTimeout(() => {
+            infoDiv.classList.add('show');
+        }, 10);
+        
+        setTimeout(() => {
+            infoDiv.classList.remove('show');
+            setTimeout(() => {
+                infoDiv.remove();
+            }, 300);
+        }, 1500);
+    }
+
+    /**
+     * Assign furniture to location via API
+     */
+    async assignFurnitureLocation(item, x, y) {
+        if (!this.furnitureRepository || !this.locationRepository) {
+            throw new Error('Repositories not available');
+        }
+
+        try {
+            // For now, we'll use a simplified approach:
+            // 1. Get all locations
+            // 2. Find a location matching the current floor and room
+            // 3. If found, assign it; otherwise create a new one
+            
+            const locations = await this.locationRepository.getAll();
+            
+            // Try to find an existing location for this floor and room
+            let targetLocation = locations.find(loc => 
+                loc.floor === this.currentFloor && 
+                loc.room === (item.location?.room || 'Unknown')
+            );
+            
+            if (!targetLocation) {
+                // Create a new location
+                const locationData = {
+                    floor: this.currentFloor,
+                    room: item.location?.room || 'Unknown',
+                    building: item.location?.building || 'VIOTTE'
+                };
+                
+                targetLocation = await this.locationRepository.create(locationData);
+                console.log(`Created new location with ID: ${targetLocation.id}`);
+            } else {
+                console.log(`Using existing location with ID: ${targetLocation.id}`);
+            }
+            
+            // Assign the location to the furniture
+            await this.furnitureRepository.assignLocation(item.id, targetLocation.id);
+            
+            console.log(`Successfully assigned furniture ${item.id} to location ${targetLocation.id}`);
+        } catch (error) {
+            console.error('Error in assignFurnitureLocation:', error);
+            throw error;
+        }
     }
 
     /**
