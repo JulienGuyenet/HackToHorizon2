@@ -101,12 +101,12 @@ class InventoryService {
             }
 
             // Floor filter
-            if (this.filters.floor && item.location.floor !== this.filters.floor) {
+            if (this.filters.floor && (!item.location || item.location.floor !== this.filters.floor)) {
                 return false;
             }
 
             // Room filter
-            if (this.filters.room && item.location.room !== this.filters.room) {
+            if (this.filters.room && (!item.location || item.location.room !== this.filters.room)) {
                 return false;
             }
 
@@ -152,7 +152,7 @@ class InventoryService {
      * Get items by floor
      */
     getItemsByFloor(floor) {
-        return this.items.filter(item => item.location.floor === floor);
+        return this.items.filter(item => item.location && item.location.floor === floor);
     }
 
     /**

@@ -247,7 +247,7 @@ class MapController {
         
         // Apply additional filters
         if (this.currentFilters.room) {
-            items = items.filter(item => item.location.room === this.currentFilters.room);
+            items = items.filter(item => item.location && item.location.room === this.currentFilters.room);
         }
         if (this.currentFilters.type) {
             items = items.filter(item => item.type === this.currentFilters.type);
