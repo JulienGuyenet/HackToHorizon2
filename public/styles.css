@@ -221,6 +221,8 @@ body {
     padding: 1.5rem;
     padding-left: 0;
     height: fit-content;
+    max-height: calc(100vh - 200px);
+    overflow-y: auto;
     position: sticky;
     top: 1.5rem;
     transition: all 0.3s ease;
@@ -230,6 +232,26 @@ body {
     margin-left: -296px;
     opacity: 0;
     pointer-events: none;
+}
+
+/* Custom Scrollbar for Filter Sidebar */
+.filter-sidebar::-webkit-scrollbar {
+    width: 8px;
+}
+
+.filter-sidebar::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+
+.filter-sidebar::-webkit-scrollbar-thumb {
+    background: var(--color-brown-light);
+    border-radius: 4px;
+    transition: background 0.3s;
+}
+
+.filter-sidebar::-webkit-scrollbar-thumb:hover {
+    background: var(--color-brown-medium);
 }
 
 /* Filter Header with Toggle Button */
