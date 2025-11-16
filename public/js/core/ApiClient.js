@@ -6,10 +6,10 @@
 class ApiClient {
     constructor(config = {}) {
         this.config = {
-            baseURL: config.baseURL || 'http://localhost:8080/api',
-            httpsBaseURL: config.httpsBaseURL || 'https://localhost:8080/api',
+            baseURL: config.baseURL || 'http://hacktohorizon2025-api.onrender.com/api',
+            httpsBaseURL: config.httpsBaseURL || 'https://hacktohorizon2025-api.onrender.com/api',
             timeout: config.timeout || 10000,
-            useHttps: config.useHttps || false
+            useHttps: config.useHttps || true
         };
     }
 
