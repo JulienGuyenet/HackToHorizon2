@@ -310,7 +310,7 @@ class MapController {
             <div class="modal-overlay" id="add-furniture-modal">
                 <div class="modal-content">
                     <h3>Ajouter un meuble sur la carte</h3>
-                    <p>Sélectionnez un meuble et son emplacement pour l'étage ${this.escapeHtml(this.currentFloor)}</p>
+                    <p>Sélectionnez un meuble à placer sur l'étage ${this.escapeHtml(this.currentFloor)}</p>
                     
                     <div class="form-group">
                         <label for="furniture-select">Meuble</label>
@@ -319,18 +319,10 @@ class MapController {
                         </select>
                     </div>
                     
-                    <div class="form-group">
-                        <label for="location-room-select">Emplacement (Salle)</label>
-                        <select id="location-room-select" class="form-control">
-                            <option value="">Sélectionner une salle</option>
-                        </select>
-                    </div>
-                    
                     <div class="modal-info">
                         <p><strong>Instructions:</strong></p>
                         <ol>
                             <li>Sélectionnez un meuble dans la liste</li>
-                            <li>Choisissez l'emplacement (salle) où placer le meuble</li>
                             <li>Cliquez sur la carte pour placer le meuble</li>
                             <li>Les coordonnées seront enregistrées automatiquement</li>
                         </ol>
@@ -351,9 +343,6 @@ class MapController {
         
         // Populate furniture list
         this.populateFurnitureList();
-        
-        // Populate location/room list for current floor
-        this.populateLocationList();
         
         // Setup cancel button
         document.getElementById('cancel-furniture-select').addEventListener('click', () => {
@@ -387,46 +376,12 @@ class MapController {
     }
 
     /**
-     * Populate location/room list in the modal
-     */
-    populateLocationList() {
-        const select = document.getElementById('location-room-select');
-        const allItems = this.inventoryService.getAllItems();
-        
-        // Get unique rooms for the current floor
-        const roomsSet = new Set();
-        allItems.forEach(item => {
-            if (item.location && item.location.floor === this.currentFloor && item.location.room) {
-                roomsSet.add(item.location.room);
-            }
-        });
-        
-        // Convert to sorted array
-        const rooms = Array.from(roomsSet).sort();
-        
-        // Populate select options
-        rooms.forEach(room => {
-            const option = document.createElement('option');
-            option.value = room;
-            option.textContent = room;
-            select.appendChild(option);
-        });
-    }
-
-    /**
      * Enable furniture placement mode
      */
     enableFurniturePlacement() {
         const selectedId = document.getElementById('furniture-select').value;
-        const selectedRoom = document.getElementById('location-room-select').value;
-        
         if (!selectedId) {
             alert('Veuillez sélectionner un meuble');
-            return;
-        }
-        
-        if (!selectedRoom) {
-            alert('Veuillez sélectionner un emplacement (salle)');
             return;
         }
         
@@ -444,17 +399,16 @@ class MapController {
         
         this.closeAddFurnitureDialog();
         
-        // Enable placement mode with selected location
-        this.startPlacementMode(selectedItem, selectedRoom);
+        // Enable placement mode
+        this.startPlacementMode(selectedItem);
     }
 
     /**
      * Start furniture placement mode
      */
-    startPlacementMode(item, selectedRoom) {
-        // Store the item to place and selected room
+    startPlacementMode(item) {
+        // Store the item to place
         this.itemToPlace = item;
-        this.selectedRoom = selectedRoom;
         
         // Add visual feedback
         const mapContainer = document.getElementById('map-container');
@@ -468,7 +422,6 @@ class MapController {
             <div class="placement-message">
                 <p><strong>Mode placement actif</strong></p>
                 <p>Cliquez sur la carte pour placer: <em>${this.escapeHtml(item.designation)}</em></p>
-                <p>Emplacement: <em>${this.escapeHtml(selectedRoom)}</em></p>
                 <button class="btn btn-secondary btn-sm" id="cancel-placement">Annuler</button>
             </div>
         `;
@@ -562,9 +515,8 @@ class MapController {
             this.placementClickHandler = null;
         }
         
-        // Clear item to place and selected room
+        // Clear item to place
         this.itemToPlace = null;
-        this.selectedRoom = null;
     }
 
     /**
@@ -631,7 +583,7 @@ class MapController {
     }
 
     /**
-     * Assign furniture to location via API
+     * Assign furniture to location via API and update coordinates
      */
     async assignFurnitureLocation(item, x, y) {
         if (!this.furnitureRepository || !this.locationRepository) {
@@ -639,23 +591,33 @@ class MapController {
         }
 
         try {
-            // Use the selected room from the modal instead of the item's location
-            const targetRoom = this.selectedRoom || item.location?.room || 'Unknown';
+            // Update furniture with new coordinates
+            const updatedFurnitureData = {
+                ...item,
+                coordinates: {
+                    x: x,
+                    y: y
+                }
+            };
             
-            // Get all locations
+            // Update the furniture via API with the new coordinates
+            await this.furnitureRepository.update(item.id, updatedFurnitureData);
+            console.log(`Successfully updated furniture ${item.id} with coordinates (${x}, ${y})`);
+            
+            // Also assign/update the location if the floor has changed
             const locations = await this.locationRepository.getAll();
             
             // Try to find an existing location for this floor and room
             let targetLocation = locations.find(loc => 
                 loc.floor === this.currentFloor && 
-                loc.room === targetRoom
+                loc.room === (item.location?.room || 'Unknown')
             );
             
             if (!targetLocation) {
                 // Create a new location
                 const locationData = {
                     floor: this.currentFloor,
-                    room: targetRoom,
+                    room: item.location?.room || 'Unknown',
                     building: item.location?.building || 'VIOTTE'
                 };
                 
@@ -665,10 +627,11 @@ class MapController {
                 console.log(`Using existing location with ID: ${targetLocation.id}`);
             }
             
-            // Assign the location to the furniture
-            await this.furnitureRepository.assignLocation(item.id, targetLocation.id);
-            
-            console.log(`Successfully assigned furniture ${item.id} to location ${targetLocation.id}`);
+            // Assign the location to the furniture if it's different
+            if (item.location?.floor !== this.currentFloor) {
+                await this.furnitureRepository.assignLocation(item.id, targetLocation.id);
+                console.log(`Successfully assigned furniture ${item.id} to location ${targetLocation.id}`);
+            }
         } catch (error) {
             console.error('Error in assignFurnitureLocation:', error);
             throw error;
