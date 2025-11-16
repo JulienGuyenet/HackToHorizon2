@@ -209,6 +209,7 @@ body {
     display: flex;
     gap: 1.5rem;
     min-height: 600px;
+    position: relative;
 }
 
 /* Filter Sidebar */
@@ -235,9 +236,10 @@ body {
 .filter-header {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: flex-start;
     margin-bottom: 1.5rem;
     padding-bottom: 0.8rem;
+    padding-left: 3rem;
     border-bottom: 2px solid var(--color-teal);
 }
 
@@ -252,15 +254,19 @@ body {
 
 /* Sidebar Toggle Button (Hamburger Icon) */
 .sidebar-toggle-btn {
+    position: absolute;
+    left: 0;
+    top: 1.5rem;
     background: transparent;
     border: none;
     cursor: pointer;
-    padding: 0.25rem;
+    padding: 0.5rem;
     display: flex;
     align-items: center;
     justify-content: center;
     transition: all 0.2s ease;
     color: var(--color-brown-dark);
+    z-index: 10;
 }
 
 .sidebar-toggle-btn:hover {
