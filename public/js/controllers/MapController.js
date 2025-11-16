@@ -364,13 +364,13 @@ class MapController {
         
         // Get items without coordinates or for current floor
         const availableItems = allItems.filter(item => 
-            !item.coordinates || item.coordinates.x === null || item.location.floor === this.currentFloor
+            !item.coordinates || item.coordinates.x === null || item.location?.floor === this.currentFloor
         );
         
         availableItems.forEach(item => {
             const option = document.createElement('option');
             option.value = item.id || item.barcode;
-            option.textContent = `${item.designation} (${item.location.room || 'Sans salle'})`;
+            option.textContent = `${item.designation} (${item.location?.room || 'Sans salle'})`;
             select.appendChild(option);
         });
     }

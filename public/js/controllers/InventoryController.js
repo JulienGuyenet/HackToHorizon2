@@ -201,7 +201,7 @@ class InventoryController {
                     ${userRow}
                     <div class="item-detail">
                         <span class="label">Localisation:</span>
-                        <span class="value">${this.escapeHtml(item.location.floor || 'N/A')} - Salle ${this.escapeHtml(item.location.room || 'N/A')}</span>
+                        <span class="value">${this.escapeHtml(item.location?.floor || 'N/A')} - Salle ${this.escapeHtml(item.location?.room || 'N/A')}</span>
                     </div>
                 </div>
             </div>
