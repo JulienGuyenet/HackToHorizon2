@@ -9,7 +9,7 @@ class ApiClient {
             baseURL: config.baseURL || 'http://hacktohorizon2025-api.onrender.com/api',
             httpsBaseURL: config.httpsBaseURL || 'https://hacktohorizon2025-api.onrender.com/api',
             timeout: config.timeout || 10000,
-            useHttps: config.useHttps || true
+            useHttps: config.useHttps || false
         };
     }
 
