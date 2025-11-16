@@ -26,8 +26,8 @@
     --font-body: 'Open Sans', sans-serif;
     
     /* Spacing */
-    --header-height: 72px;
-    --logo-height: 36px;
+    --header-height: 6rem;
+    --logo-height: 4rem;
     --logo-padding: 8px;
 }
 
